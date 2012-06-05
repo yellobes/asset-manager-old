@@ -1,0 +1,11 @@
+{% extends "Assets/base.html" %}
+{% block title %}{{ section.title }}{% endblock %}
+</script>
+{% block content %}
+<script type="text/javascript">
+    $(document).ready( function(){
+            $('#content').load('{% url assetSearch %}?');
+        }); 
+</script>
+<div id="content"></div>
+{% endblock %}

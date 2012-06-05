@@ -1,0 +1,40 @@
+<!-- 3W0NF -->
+
+{% extends 'Assets/element.html' %}
+{% block object_as_p %}
+
+<form enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    {{ object_form.as_p }}
+    <input name='PUT' type='hidden' />
+    <input class="submitButton"
+    id="{{ 1 }}" type="submit" value="Save" />
+</form>
+
+{% block extension %}{% endblock %}
+
+<script type="text/javascript">
+    // Success indicator
+    $('.hide').fadeOut(1000);
+    document.title = "{{ title }}"
+    
+    // append a "now" button to date fields
+    $('input').filter(function() {
+            return this.id.match(/\w+date/);
+        }).parent().append(
+            "<button class='datebtn' type='button'>now</button>");
+
+    // find the buttons created above, and attach a handler to insert date/time
+    $('.datebtn').click(function() {
+            var d = new Date();
+            var se = "-";
+            var mo = parseInt(d.getMonth()) + 1;
+            var day = d.getDate();
+            var yr = d.getFullYear();
+            var dateTime = yr + se + mo + se + day;
+            $(this).parent().find('input').val(dateTime);
+            });
+</script>
+
+{% endblock %}
+

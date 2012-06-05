@@ -1,0 +1,23 @@
+{% extends 'Assets/collection.html' %}
+
+{# Collection is the set of objects passed from views. #}
+{% url Assets.views.collection 'asset' as collection_url %}
+
+    {% block object_table %}
+
+    <table>
+        <tbody>
+    {% for thing in collection %}
+    {% url Assets.views.element 'asset' thing.pk as element_url %}
+        <tr>
+            <td><a href='{{ element_url }}'>Edit</a></td>
+            <td>{{ thing.description|truncatechars:200 }}</td>
+            <td>{{ thing.asset_code }}</td>
+        </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+
+    {% endblock %}
+
+

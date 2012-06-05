@@ -1,0 +1,59 @@
+<!-- -1GTI -->
+<table class="table-border">
+    <tr>
+        <td>Photo</td>
+        <td>Asset Code</td>
+        <td>Make</td>
+        <td>Model</td>
+        <td>Description</td>
+        <td>Checked Out To</td>
+        <td>Modify</td>
+    </tr>
+{% for result in page %}
+    {% if not result.object.title %}
+        <tr>
+            <td>
+            {% if result.object.photo %}
+              <img style="max-width:25px;max-height:25px;"src="/m/{{ result.object.photo }}" />
+            {% endif %}
+            </td>
+            <td>{{ result.object.asset_code }}</td>
+            <td>{{ result.object.make }}</td>
+            <td>{{ result.object.model }}</td>
+            <td>{{ result.object.description|truncatewords:50 }}</td>
+            <td>
+            {% if result.checked_out_to %}
+            <form action='/assign/asset/{{result.object.id}}/checkout/'
+                method="post">
+                {% csrf_token %}
+                <input type='hidden' name='delete' value='delete' />
+                <input type="submit" value="Check In"></input>
+            </form>
+            </td>
+            {% else %}
+            <input type="button"
+            onclick="location.href='/assign/asset/{{result.object.id}}/checkout/';"value="Check Out"></input>
+            </td>
+            
+            {% endif %}
+            <td>
+            <input type="button"
+            onclick="location.href='/assign/asset/{{result.object.id}}/edit/';"value="modify"></input>
+            </td>
+        </td>
+      </tr>
+
+    {% endif %}
+{% empty %}
+    <p>No results found. <br />&nbsp;<b><em><a href="/help/searching">need help?</a></em></b></p>
+    
+    {% endfor %}
+</table>
+
+{% if page.has_previous or page.has_next %}
+    <div>
+        {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
+        |
+        {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+    </div>
+{% endif %}

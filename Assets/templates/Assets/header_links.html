@@ -1,0 +1,40 @@
+<div id="menu">
+    <div class="menu-header">
+        <p>Admin</p>
+        <ul class="menu">
+            <li class="menu-item">
+                <a href="/admin">Admin Console</a>
+            </li>
+            <li class="menu-item">
+                <a href="/admin/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+    <div class="menu-header">
+        <p>Create</p>
+        <ul class="menu">
+            <li class="menu-item">
+                <a href="/assign/asset/create/">Asset</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<style type="text/css">
+    .menu-top {
+        float: right;
+    }
+    .menu {
+        float: right;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function() {
+            $('.menu').hide();
+            });
+
+    $('.menu-header').mouseover(function() {
+        $(this).children('ul').show();
+    }).mouseout(function() {
+        $(this).children('ul').hide();
+    });
+</script>

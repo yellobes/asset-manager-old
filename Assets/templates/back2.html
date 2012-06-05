@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <script type="text/javascript">
+        function setCookie(c_name,value,exdays){
+            var exdate=new Date();
+            exdate.setDate(exdate.getDate() + exdays);
+            var c_value=escape(value) + ((exdays==null) ? "" : "; expires="
+                    + exdate.toUTCString()) + ";path=/";
+            document.cookie=c_name + "=" + c_value;
+        }
+        </script>
+    </head>
+    <body onload="setCookie('success','SAVED[{{thing}}:{{thing_id}}]',2);">
+        <meta http-equiv="refresh" content="0;url=/asset_console/" />
+    </body>
+</html>

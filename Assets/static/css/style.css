@@ -1,0 +1,246 @@
+/*
+ *      This is the main stylesheet for the asset console application 
+ *  written but not necessarily maintained or supported by:
+
+ *  Comprehensive Computer Consulting LLC
+ *  Flexion LLC
+ *
+ ***    Peter Novotnak `.- 2012    */
+
+body {
+    background-color: #DDD;
+    min-width: 200px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    clear: both;
+    overflow: auto;
+}
+
+#page-header {
+    height: 2.4em;
+    min-width: 200px;
+    position: fixed;
+    background-color: rgba(248,248,248,.9);
+    box-shadow: 0 0 12px #aaa;
+    filter: alpha(opacity = 50);
+
+}
+
+
+#hide-page-header {
+    padding: 0;
+    width: auto;
+    float: left;
+    margin: 0 auto;
+}
+
+#unhide-page-header {
+    float: left;
+    margin: 0 auto;
+}
+
+#page-footer {
+    position:fixed;
+    background:rgba(255,00,255,.2);
+    filter: alpha(opacity = 50);
+    bottom:0px;
+}
+
+/*``````````````````````````````````````*/
+
+.menu-container {
+    float: right;
+}
+
+.menu-header {
+    font-size: 1em;
+    float:right;
+    padding: 0 4px 0 0;
+    margin: .7em 4px auto 0;
+}
+
+.menu {
+    padding: 0px;
+    margin: 0px;
+    min-width: 100%;
+}
+
+.menu-header p {
+    border-right: 1px solid #000;
+}
+
+.menu-header p:first-child  {
+    border-right: none;
+}
+
+.menu-item {
+    background-color: rgba(200,200,200,.9);
+    border: 1px solid #fff;
+}
+
+/*````````````````` /Menu Stylz ```````````````````` */
+
+#sidebar {
+    z-index:-1;
+    /*position:fixed;*/
+    background:rgba(210,210,190,.8);
+}
+
+#content {
+    width:100%;
+    margin:2.8em 0;
+    float:left;
+    background:rgba(230,230,230,.8);
+}
+
+.transparent-input {
+    margin:6px;
+    background-color: rgba(220,200,220,.95);
+}
+
+.float-left {
+    float:left;
+}
+
+.float-right {
+    float:right;
+}
+
+.index-item {
+    border-bottom:1px solid #fff;
+    padding:3px 0px;
+}
+
+.margin-tb {
+    margin:5px 0px;
+}
+
+.margin-rl {
+    margin:0px 5px;
+}
+
+.clear {
+    width:100%;
+    text-align:center;
+    clear:both;
+}
+
+.table-border {
+    margin:0 auto;
+    border-collapse:collapse;
+    border-spacing: 0px;
+}
+
+.results-table {} /* migrate the above to this */
+
+.hide {
+    z-index:-1;
+}
+
+.hidden {
+    display: none;
+}
+
+a {
+    text-decoration:none;
+}
+
+a:visited {
+    color:#000;
+}
+
+.top-li:hover {
+    border:1px solid #ddd;
+    background:rgba(240,240,240,.9);
+}
+
+td {
+    border:1px solid #aaa;
+    text-align:center;
+    padding: 0px 4px;
+}
+
+td:hover {
+    -moz-box-shadow:    inset 1 1 10px #fff;
+    -webkit-box-shadow: inset 1 1 10px #fff;
+    box-shadow:         inset 1 1 15px #fff;
+    border:1px solid #bbb;
+    background:rgb(245,245,245);
+}
+
+tr:hover {
+    background:rgba(250,250,250,.9);
+}
+
+.top-li:hover {
+    -moz-box-shadow: 1px 1px 1px #bbb;
+    -webkit-box-shadow: 1px 1px 1px #bbb;
+    box-shadow: 1px 1px 1px #bbb;
+    background:rgba(235,235,235,1);
+}
+
+.top-li:active {
+    background:rgba(255,255,255,0)
+    box-shadow:    inset 0 0 1px #bbb;
+   -webkit-box-shadow: inset 0 0 1px #bbb;
+   box-shadow:         inset 0 0 1px #bbb;
+}
+
+/* TODO */
+li: {
+
+}
+
+p {
+    margin:0px;
+    padding:0px;
+}
+
+.top-li {
+    margin:10px;
+}
+
+.top-li {
+    border:1px dotted #bbb;
+    height:1em;
+    background:rgba(240,240,240,.8);
+    -moz-box-shadow: 2px 2px 5px #aaa;
+    -webkit-box-shadow: 2px 2px 5px #aaa;
+    box-shadow: 2px 2px 5px #aaa;
+}
+
+li.leaf, li.collapsed, li.expanded {
+    list-style-image: none;
+    list-style: none;
+    list-style-type: none;
+}
+
+ul {
+    list-style-image: none;
+    list-style: none;
+    list-style-type: none;
+}
+
+hr {
+    color:rgba(250,250,250,.5);
+    -moz-box-shadow: 1px 1px 1px #fafafa;
+    -webkit-box-shadow: 1px 1px 1px #fafafa;
+    box-shadow: 1px 1px 5px #fafafa;
+}
+
+h1, h2, h3, h4 {
+    padding:0px;
+    margin:0px;
+}
+/*------------Errors & Dialogs-----------*/
+.errorlist {
+    color:#005;
+    background-color:#e00;
+}
+
+#change-asset-form {
+    width: 50%;
+    float: left;
+}
+
