@@ -161,23 +161,27 @@ td {
     padding: 0px 4px;
 }
 
-td:hover {
-    -moz-box-shadow:    inset 1 1 10px #fff;
-    -webkit-box-shadow: inset 1 1 10px #fff;
-    box-shadow:         inset 1 1 15px #fff;
-    border:1px solid #bbb;
-    background:rgb(245,245,245);
+tr:first-child {
+    background-color: rgba(250, 230, 250, .9);
 }
 
-tr:hover {
+.fade {
+    -webkit-transition: .1s ease-in-out;
+    -moz-transition: .1s ease-in-out;
+    -o-transition: .1s ease-in-out;
+    -ms-transition: .1s ease-in-out;
+    transition: .1s ease-in-out;
+
+}
+
+.fade:hover {
     background:rgba(250,250,250,.9);
+    -moz-box-shadow: 1px 1px 1px #bbb;
+    -webkit-box-shadow: 1px 1px 1px #bbb;
+    box-shadow: 1px 1px 1px #bbb; */
 }
 
 .top-li:hover {
-    -moz-box-shadow: 1px 1px 1px #bbb;
-    -webkit-box-shadow: 1px 1px 1px #bbb;
-    box-shadow: 1px 1px 1px #bbb;
-    background:rgba(235,235,235,1);
 }
 
 .top-li:active {

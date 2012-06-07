@@ -25,7 +25,7 @@ def filter_results(filters):
             results = SearchQuerySet().all().filter(__contains=i)
         print dbg + "processed: %s as query:" %(filters)
     for obj in results :
-        obj.checked_out_to = checkout_info(obj)
+        obj.checkout_info = checkout_info(obj)
     return results
 
 def get_object_fields(obj):

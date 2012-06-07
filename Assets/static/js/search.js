@@ -1,5 +1,6 @@
 function search(field){
     ajax($(field).val());
+    console.log('search')
 }
 
 function ajax(query){
@@ -8,5 +9,5 @@ function ajax(query){
     query0 = null
     var domain = document.domain;
     $("#content").load(
-    "{% url assetSearch %}?"+query);
+    "/assets/search/"+query);
 }

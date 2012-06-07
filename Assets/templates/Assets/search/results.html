@@ -11,7 +11,7 @@
     </tr>
 {% for result in page %}
     {% if not result.object.title %}
-        <tr>
+        <tr class="fade">
             <td>
             {% if result.object.photo %}
               <img style="max-width:25px;max-height:25px;"src="/m/{{ result.object.photo }}" />
@@ -22,8 +22,8 @@
             <td>{{ result.object.model }}</td>
             <td>{{ result.object.description|truncatewords:50 }}</td>
             <td>
-            {% if result.checked_out_to %}
-            <form action='/assign/asset/{{result.object.id}}/checkout/'
+            {% if result.checkout_info %}
+            <form action='{% url killObject 'checkout' result.checkout_info.id %}'
                 method="post">
                 {% csrf_token %}
                 <input type='hidden' name='delete' value='delete' />
@@ -31,14 +31,15 @@
             </form>
             </td>
             {% else %}
-            <input type="button"
-            onclick="location.href='/assign/asset/{{result.object.id}}/checkout/';"value="Check Out"></input>
+            <form action="{% url newObject 'checkout' %}" method="get">
+                <input type="submit" value="Check Out">
+            </form>
             </td>
             
             {% endif %}
             <td>
             <input type="button"
-            onclick="location.href='/assign/asset/{{result.object.id}}/edit/';"value="modify"></input>
+            onclick="location.href='{% url assetElement 'asset' result.object.id %}';"value="modify"></input>
             </td>
         </td>
       </tr>

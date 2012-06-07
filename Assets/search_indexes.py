@@ -22,3 +22,4 @@ class AssetIndex(SearchIndex):
 
 site.register(Asset, AssetIndex)
 
+

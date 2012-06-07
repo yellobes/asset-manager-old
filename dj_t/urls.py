@@ -8,5 +8,5 @@ urlpatterns = patterns('',
     url(r'^assets/', include('Assets.urls')),
 
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls), name="admin"),
 )
