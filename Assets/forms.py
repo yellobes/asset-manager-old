@@ -9,6 +9,30 @@ class AssetForm(ModelForm):
     class Meta:
         model = Asset
 
+class AssetSearch(SearchForm):
+    search = forms.CharField(max_length=100, required=True)
+    class Meta:
+        model = Asset
+        fields = (
+                'date_acquired',
+                'asset_status',
+                'asset_type',
+                'asset_code',
+                'description',
+                'acquired_value',
+                'make',
+                'model',
+                'serial',
+                'sku',
+                'photo',
+                'manual',
+                'manual.help_text',
+                'drivers',
+                'drivers.help_text',
+                'invoices',
+                'invoices.help_text',
+                )
+
 class AssetCheckoutForm(ModelForm):
     class Meta:
         model = AssetCheckout

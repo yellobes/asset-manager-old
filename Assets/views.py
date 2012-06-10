@@ -10,6 +10,7 @@ from Assets.models         import *
 from Assets.forms          import *
 from django.http           import Http404
 from django.forms          import ModelForm
+from haystack.forms        import ModelSearchForm
 
 from django.core.exceptions import *
 
@@ -20,11 +21,27 @@ logger = logging.getLogger('django.request')
 
 
 def search(request):
-    print 'search...'
     if ( request.method == 'GET' ) | ( request.method == 'POST' ):
-        query = request.GET
-        results = filter_results(query)
-#TODO :: Pagination :: TODO
+        sqs = SearchQuerySet().models(Asset)
+
+        if request.GET.get('q'):
+            suggestion = None
+            form = ModelSearchForm(
+                    request.GET,
+                    searchqueryset=sqs,
+                    load_all=True
+                    )
+            if form.is_valid():
+                query = form.cleaned_data['q']
+                print 'Valid search ::', query
+                results = form.search()
+
+        else: results = sqs
+
+        for result in results:
+            result.checkout_info = checkout_info(result)
+
+
         return render_to_response('Assets/search/results.html', {'page':results},
                 context_instance = RequestContext(request))
     else :
@@ -59,7 +76,6 @@ def collection(request, type):
                     print 'checkout create'
 
 def element(request, type, id) :
-    print '-element', type, id
     if request.method == 'GET':
 
         return render_object(request, type, id)
@@ -73,7 +89,7 @@ def element(request, type, id) :
 
 
 
-#========================================================FUNCTIONS
+# ================== FUNCTIONS ======================
 
 def render_object(request, type, id):
     if type == 'asset':
@@ -178,7 +194,7 @@ def render_type(request, type):
 
 
 
-
+# ================ GENERIC VIEWS ======================
 
 
 from django.views.generic import TemplateView

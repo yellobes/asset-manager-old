@@ -14,19 +14,6 @@ def checkout_info(obj) :
     return x
 
 
-def filter_results(filters):
-    results = ''
-    # grab everything if we didn't get anything for input
-    if filters == {} :
-        results = SearchQuerySet().all()
-    else :
-        for i in filters :
-            #TODO :: Contains does not match against all fields :: TODO
-            results = SearchQuerySet().all().filter(__contains=i)
-        print dbg + "processed: %s as query:" %(filters)
-    for obj in results :
-        obj.checkout_info = checkout_info(obj)
-    return results
 
 def get_object_fields(obj):
     field_list = obj._meta.local_fields

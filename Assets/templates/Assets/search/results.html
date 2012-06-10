@@ -1,4 +1,5 @@
 <!-- -1GTI -->
+{% if page %}
 <table class="table-border">
     <tr>
         <td>Photo</td>
@@ -9,6 +10,7 @@
         <td>Checked Out To</td>
         <td>Modify</td>
     </tr>
+{% endif %}
 {% for result in page %}
     {% if not result.object.title %}
         <tr class="fade">
@@ -20,7 +22,7 @@
             <td>{{ result.object.asset_code }}</td>
             <td>{{ result.object.make }}</td>
             <td>{{ result.object.model }}</td>
-            <td>{{ result.object.description|truncatewords:50 }}</td>
+            <td>{{ result.object.description|truncatewords:25 }}</td>
             <td>
             {% if result.checkout_info %}
             <form action='{% url killObject 'checkout' result.checkout_info.id %}'
@@ -32,6 +34,7 @@
             </td>
             {% else %}
             <form action="{% url newObject 'checkout' %}" method="get">
+                <input type="hidden" name="asset_id" value="result.object.id">
                 <input type="submit" value="Check Out">
             </form>
             </td>
@@ -51,10 +54,3 @@
     {% endfor %}
 </table>
 
-{% if page.has_previous or page.has_next %}
-    <div>
-        {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
-        |
-        {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
-    </div>
-{% endif %}

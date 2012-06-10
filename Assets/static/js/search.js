@@ -8,6 +8,12 @@ function ajax(query){
     query = query0
     query0 = null
     var domain = document.domain;
-    $("#content").load(
-    "/assets/search/"+query);
+    var content = "#content"
+    var indicator = "#search-running"
+    $(indicator).show()
+    $(content).load(
+    "/assets/search?q="+query,
+    function() {
+        $(indicator).hide();
+    });
 }

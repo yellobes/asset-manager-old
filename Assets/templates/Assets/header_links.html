@@ -2,20 +2,23 @@
     <div class="menu-header">
         <p>Admin</p>
         <ul class="menu">
+            <a href="/admin">
             <li class="menu-item">
-            <a href="/admin">Admin Console</a>
-            </li>
+            <p>Admin Console</p>
+            </li></a>
+            <a href="/admin/logout">
             <li class="menu-item">
-                <a href="/admin/logout">Logout</a>
-            </li>
+                <p>Logout</p>
+            </li></a>
         </ul>
     </div>
     <div class="menu-header">
         <p>Create</p>
         <ul class="menu">
+            <a href="{% url newObject 'asset' %}">
             <li class="menu-item">
-                <a href="{% url newObject 'asset' %}">Asset</a>
-            </li>
+                <p>Asset</p>
+                </li></a>
         </ul>
     </div>
 </div>

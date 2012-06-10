@@ -60,7 +60,13 @@ body {
     margin: .7em 4px auto 0;
 }
 
+.menu-header > * {
+    border: 1px solid white;
+    background-color: rgba(0, 0, 0, .08);
+}
+
 .menu {
+    box-shadow: 0 7px 14px rgba(0, 0, 0, .35);
     padding: 0px;
     margin: 0px;
     min-width: 100%;
@@ -127,6 +133,8 @@ body {
 }
 
 .table-border {
+    min-width: 480px;
+    max-width: 700px;
     margin:0 auto;
     border-collapse:collapse;
     border-spacing: 0px;
@@ -246,5 +254,10 @@ h1, h2, h3, h4 {
 #change-asset-form {
     width: 50%;
     float: left;
+}
+
+#search-running {
+    float: left;
+    display: none;
 }
 
