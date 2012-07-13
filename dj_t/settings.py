@@ -10,7 +10,9 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-LOGIN_URL = '/admin/login/'
+LOGIN_REDIRECT_URL = '/assets/'
+
+ACCOUNT_ACTIVATION_DAYS = 2
 
 DATABASES = {
     'default': {
@@ -109,6 +111,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    '/home/peter/dj-trunk/templates/',
 )
 
 INSTALLED_APPS = (
@@ -120,6 +123,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
+
+    'registration',
+
     'haystack',
 
     'Assets',
