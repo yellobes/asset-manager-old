@@ -4,7 +4,7 @@ from haystack import site
 from Assets.models import Asset
 
 class AssetIndex(SearchIndex):
-    text = CharField(document=True, use_template=True)
+    text = CharField(document=True, use_template=False)
     date_acquired = CharField(model_attr='date_acquired',)
     asset_type = CharField(model_attr='asset_type',)
     asset_code = CharField(model_attr='asset_code',)

@@ -1,8 +1,9 @@
 from django.conf.urls import patterns, include, url
-from Assets.views import AssetIndex
+from django.views.generic import TemplateView
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('',
-    url(r'^$', AssetIndex.as_view(), name='assetIndex'),
+    url(r'^$', login_required(TemplateView.as_view(template_name='Assets/index.html'))),
     url(r'^javascript/(?P<file>\w+)', 'Assets.views.javascript', name='assetScript'),
     url(r'^search', 'Assets.views.search', name='assetSearch'),
     url(r'^(?P<type>\w+)/(?P<id>\d+)$', 'Assets.views.element', name='assetElement'),

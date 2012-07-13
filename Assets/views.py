@@ -200,7 +200,4 @@ def render_type(request, type):
 from django.views.generic import TemplateView
 
 
-class AssetIndex(TemplateView):
-    template_name = "Assets/index.html"
-
 

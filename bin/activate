@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelavent variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/peter/Documents/flexion/django_trunk"
+VIRTUAL_ENV="/home/peter/dj_t/bin/"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
