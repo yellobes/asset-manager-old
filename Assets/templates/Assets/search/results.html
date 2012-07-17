@@ -34,7 +34,7 @@
             </td>
             {% else %}
             <form action="{% url newObject 'checkout' %}" method="get">
-                <input type="hidden" name="asset_id" value="result.object.id">
+                <input type="hidden" name="asset_id" value="{{ result.object.id }}">
                 <input type="submit" value="Check Out">
             </form>
             </td>

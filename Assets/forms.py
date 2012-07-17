@@ -36,5 +36,14 @@ class AssetSearch(SearchForm):
 class AssetCheckoutForm(ModelForm):
     class Meta:
         model = AssetCheckout
-        exclude = ('in_date',)
+        exclude = ('in_date')
+
+class AssetCheckoutFancyForm(ModelForm):
+    class Meta:
+        model = AssetCheckout
+        fields = (
+                'out_date',
+                'user_id',
+                'description',
+                )
 

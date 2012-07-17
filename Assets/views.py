@@ -90,16 +90,20 @@ def element(request, type, id) :
 
 
 # ================== FUNCTIONS ======================
+class extra_datas:
+    pass
 
 def render_object(request, type, id):
+    extra_data = extra_datas()
     if type == 'asset':
         Type = Asset
         TypeForm = AssetForm
         template = 'asset.html'
     elif type == 'checkout':
         Type = AssetCheckout
-        TypeForm = AssetCheckoutForm
+        TypeForm = AssetCheckoutFancyForm
         template = 'checkout.html'
+        extra_data.asset_id = request.GET.get('asset_id', '')
     else:
         raise Http404
 
@@ -109,18 +113,25 @@ def render_object(request, type, id):
         element = Type()
     object_form = TypeForm(instance=element)
     return render_to_response('Assets/'+template,
-            { 'object_form' : object_form },
+            {
+                'object_form' : object_form,
+                'extra_data' : extra_data,
+                },
             context_instance = RequestContext(request))
 
 def create_object(request, type, id):
+    extra_data = extra_datas()
     if type == 'asset':
         Type = Asset
         TypeForm = AssetForm
-        template = 'asset.html'
+        template = 'Assets/asset.html'
     elif type == 'checkout':
         Type = AssetCheckout
         TypeForm = AssetCheckoutForm
-        template = 'checkout.html'
+        template = 'Assets/checkout.html'
+        extra_data.asset_id = request.GET.get('asset_id', '')
+
+        
     else:
         raise Http404
 
@@ -131,8 +142,9 @@ def create_object(request, type, id):
 
     object_form = TypeForm( request.POST, request.FILES, instance=Type)
 
+
     if object_form.is_valid():
-        print 'got a valid asset form'
+        print 'got a valid form'
         object_form.save()
         print 'updating search index'
         django.core.management.call_command("update_index")
@@ -140,8 +152,14 @@ def create_object(request, type, id):
         #------------------------------------------------------
 
     else:
-        return render_to_response('Assets/asset.html',
-                { 'object_form' : object_form },
+        if Type == AssetCheckout:
+           # if extra_data.asset_id is not None
+           TypeForm == AssetCheckoutFancyForm
+        return render_to_response(template,
+                { 
+                    'object_form' : object_form,
+                    'extra_data' : extra_data,
+                    },
                 context_instance = RequestContext(request))
 
 def kill_object(request, type, id):

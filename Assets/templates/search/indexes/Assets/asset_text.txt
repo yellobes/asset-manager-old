@@ -1,0 +1,14 @@
+{{ date_acquired }}
+{{ asset_status }}
+{{ asset_type }}
+{{ asset_code }}
+{{ description }}
+{{ acquired_value }}
+{{ make }}
+{{ model }}
+{{ serial }}
+{{ sku }}
+{{ photo }}
+{{ manual }}
+{{ drivers }}
+{{ invoices }}

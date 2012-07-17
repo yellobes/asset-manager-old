@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('',
-    url(r'^$', login_required(TemplateView.as_view(template_name='Assets/index.html'))),
+    url(r'^$', login_required(TemplateView.as_view(template_name='Assets/index.html')), name='assetIndex'),
     url(r'^javascript/(?P<file>\w+)', 'Assets.views.javascript', name='assetScript'),
     url(r'^search', 'Assets.views.search', name='assetSearch'),
     url(r'^(?P<type>\w+)/(?P<id>\d+)$', 'Assets.views.element', name='assetElement'),

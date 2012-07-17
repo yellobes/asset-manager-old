@@ -6,6 +6,7 @@
 <form enctype="multipart/form-data" method="POST">
     {% csrf_token %}
     {{ object_form.as_p }}
+    <input name='asset_id' value='{{ extra_data.asset_id }}' type='hidden' />
     <input name='PUT' type='hidden' />
     <input class="submitButton"
     type="submit" value="Save" />
