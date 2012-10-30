@@ -78,6 +78,10 @@ body {
     min-width: 100%;
 }
 
+#menu div {
+    max-height: 1px;
+}
+
 .menu-header p {
     padding: 0 3px 0 3px;
     border-right: 1px solid #000;
@@ -163,7 +167,6 @@ body {
 #asset-mod > * > p, div, label {
     background-color: rgba(255,255,255,.25);
     box-shadow: 0 0 20px 5px rgba(255,255,255,.25);
-    display: inline-block;
 }
 
 
@@ -174,6 +177,7 @@ body {
 
 
 #asset-mod > * {
+    display: block;
     margin: 10px 0;
 }
 

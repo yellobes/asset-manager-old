@@ -133,7 +133,7 @@ INSTALLED_APPS = (
 
 
 # haystack configuration
-HAYSTACK_WHOOSH_PATH = 'woosh_index'
+HAYSTACK_WHOOSH_PATH = 'whoosh_index'
 HAYSTACK_SITECONF = 'dj_t.search'
 HAYSTACK_SEARCH_ENGINE = 'whoosh'
 HAYSTACK_CONNECTIONS = {

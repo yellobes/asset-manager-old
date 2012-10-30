@@ -1,2 +1,11 @@
-*pyc
+
+*.pyc
+*.DS_Store
+
+*.db
+
+whoosh_index/**/*
+static/**/*
+media/**/*
+
 

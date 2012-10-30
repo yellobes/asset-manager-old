@@ -6,18 +6,6 @@ from django.db.models.signals import post_save
 # The main class that the application is built around.
 # A more or less generic model to define an asset
 class Asset(models.Model) :
-    #TYPE_CHOICES = (
-    #        ('desktop',             'Desktop'),
-    #        ('laptop',              'Laptop'),
-    #        ('tablet',              'Tablet'),
-    #        ('smartphone',          'Smartphone'),
-    #        ('printer',             'Printer'),
-    #        ('network device',      'network device'),
-    #        ('accessory/peripheral','Accessory/Peripheral'),
-    #        ('other',               'Other'),
-    #        ('software',            'Software'),
-    #        ('copier',              'Copier'),
-    #    )
     STATUS_CHOICES = (
             ('active',   'active'),
             ('inactive', 'inactive'),
@@ -30,8 +18,8 @@ class Asset(models.Model) :
         )
     date_acquired = models.DateField()
     asset_status = models.CharField(choices=STATUS_CHOICES, max_length=100)
-    #asset_type = models.CharField(choices=TYPE_CHOICES, max_length=100)
     asset_type = models.ForeignKey("AssetType")
+    external_id = models.CharField(max_length=200, blank=True)
     asset_code = models.CharField(max_length=100, unique=True)
     description = models.TextField(max_length=2000)
     acquired_value = models.CharField(max_length=1000)
