@@ -16,6 +16,10 @@ from django.core.exceptions import *
 
 from Assets.functions import *
 
+
+from datetime import datetime
+from django.utils.timezone import utc
+
 import logging
 logger = logging.getLogger('django.request')
 
@@ -58,28 +62,21 @@ def javascript(request, file):
 def collection(request, type):
     print 'collection', type
     if request.method == 'GET':
-
         return render_type(request, type)
-
     elif  request.method == 'POST'  :
-
-        if  'PUT' in request.POST:
+        if 'PUT' in request.POST:
             print 'collection', 'PUT'
-
-        elif  'DELETE' in request.POST :
+        elif 'DELETE' in request.POST :
             print 'collection', 'DELETE'
-
         else :
-
-            if  'asset_id' in request.POST :
+            if 'asset_id' in request.POST :
                 if  type == 'checkout' :
                     print 'checkout create'
 
+
 def element(request, type, id) :
     if request.method == 'GET':
-
         return render_object(request, type, id)
-
     elif request.method == 'POST' :
         if 'PUT' in request.POST:
             return create_object(request, type, id)
@@ -112,6 +109,7 @@ def render_object(request, type, id):
         Type = AssetType
         TypeForm = AssetTypeForm
         template = 'type.html'
+        extra_data.types = Type.objects.all()[:10]
     else:
         raise Http404
 
@@ -138,8 +136,11 @@ def create_object(request, type, id):
         TypeForm = AssetCheckoutForm
         template = 'Assets/checkout.html'
         extra_data.asset_id = request.GET.get('asset_id', '')
-
-        
+    elif type == 'assettype':
+        Type = AssetType
+        TypeForm = AssetTypeForm
+        template  = 'Assets/type.html'
+        extra_data.types = Type.objects.all()[:10]
     else:
         raise Http404
 
@@ -179,8 +180,7 @@ def kill_object(request, type, id):
             Type = Type.objects.get(pk=id)
         except Type.DoesNotExist :
             return Http404
-        from datetime import datetime
-        Type.in_date = str(datetime.today())
+        Type.in_date = str(datetime.today().replace(tzinfo=utc))
         Type.save()
     else:
         raise Http404

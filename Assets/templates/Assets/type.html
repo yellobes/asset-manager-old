@@ -1,42 +1,34 @@
 <!-- 3W0NF -->
 
 {% extends 'Assets/element.html' %}
-{% block object_as_p %}
-<h1 class="form-title">Asset Type Form</h1>
-<form id="asset-mod" enctype="multipart/form-data" method="POST">
-    {% csrf_token %}
-    {{ object_form.as_p }}
-    <input name='PUT' type='hidden' />
-    <input class="submitButton"
-    id="{{ 1 }}" type="submit" value="Save" />
-</form>
 
-{% block extension %}{% endblock %}
+{% block header %}
+    <a href="/assets/">&lsaquo; Asset index</a> <span id="newtype"> &middot; <a href="{% url newObject 'assettype' %}">New Asset Type &rsaquo;</a></span>
+    <h1 class="form-title">Asset Type Form</h1>
+    <div id="pre-existing types">
+      <hr>
+      <span style="display:inline-block;">
+        <p>
+          These types already exist:
+        </p>
+      </span>
+      <ul style="display:inline-block;">
+        {% for type in extra_data.types %}
+        <li><a href="{% url Assets.views.element 'assettype' type.id %}">{{ type }}</a></li>
+        {% endfor %}
+      </ul>
+      <hr>
+    </div>
+{% endblock %}
 
-<script type="text/javascript">
-// append a "now" button to date fields
-$('input').filter(function() {
-        return this.id.match(/\w+date/);
-    }).parent().append(
-        "<button class='datebtn' type='button'>now</button>");
-
-// find the buttons created above, and attach a handler to insert date/time
-$('.datebtn').click(function() {
-    var d = new Date();
-    var se = "-";
-    var mo = parseInt(d.getMonth()) + 1;
-    var day = d.getDate();
-    var yr = d.getFullYear();
-    var dateTime = yr + se + mo + se + day;
-    $(this).parent().find('input').val(dateTime);
- });
-</script>
-
-<style type="text/css">
-    .errorlist {
-        background-color: #F00;
-    }
-</style>
-
+{% block body %}
+    <form id="asset-mod" enctype="multipart/form-data" method="POST">
+      {% csrf_token %}
+      {{ object_form.as_p }}
+      <input name='PUT' type='hidden' />
+      <input class="submitButton"
+      id="{{ 1 }}" type="submit" value="Save" />
+    </form>
+    {% block extension %}{% endblock %}
 {% endblock %}
 

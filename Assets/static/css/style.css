@@ -40,6 +40,15 @@ body {
     margin: 0 auto;
 }
 
+#wrapper {
+    text-align: center;
+}
+
+#body {
+    display: inline-block;
+    text-align: left;
+}
+
 #footer {
     clear: both;
 }
