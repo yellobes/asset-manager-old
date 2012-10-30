@@ -16,7 +16,7 @@
         <tr class="fade">
             <td>
             {% if result.object.photo %}
-              <img style="max-width:25px;max-height:25px;"src="/m/{{ result.object.photo }}" />
+              <img class="asset-icon" src="/m/{{ result.object.photo }}" />
             {% endif %}
             </td>
             <td>{{ result.object.asset_code }}</td>
@@ -53,4 +53,34 @@
     
     {% endfor %}
 </table>
+<script type="text/javascript">
+  // Set everything up
+  $(document).ready(function(){
+      $('.asset-icon').width('50px');
+      window.icon = [];
+      $('.asset-icon').last().each(function(){
+        window.icon.margintop = $(this).css('margin-top');
+        window.icon.width = $(this).width();
+        window.icon.height = $(this).width();
+      });
+  });
 
+  // Animate the tables icons
+  $('.asset-icon').mouseenter(function(){
+    $(this).animate({
+      'margin-top': '-'+window.icon.margintop,
+      width: (window.icon.width * 1.5),
+      height: (window.icon.height * 1.5),
+      }, 50
+    );
+  });
+
+  // Animate the tables icons
+  $('.asset-icon').mouseleave(function(){
+      $(this).animate({
+      'margin-top': window.icon.margintop,
+      width: window.icon.width,
+      height: window.icon.height,
+    }, 50);
+  });
+</script>

@@ -3,7 +3,7 @@
 {% extends 'Assets/element.html' %}
 {% block object_as_p %}
 
-<form enctype="multipart/form-data" method="POST">
+<form id="asset-checkout" enctype="multipart/form-data" method="POST">
     {% csrf_token %}
     {{ object_form.as_p }}
     <input name='asset_id' value='{{ extra_data.asset_id }}' type='hidden' />

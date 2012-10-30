@@ -7,3 +7,5 @@ def reg(mod) :
 reg(Asset)
 reg(Note)
 reg(AssetCheckout)
+reg(ExternalID)
+reg(AssetType)

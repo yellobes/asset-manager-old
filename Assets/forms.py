@@ -38,6 +38,11 @@ class AssetCheckoutForm(ModelForm):
         model = AssetCheckout
         exclude = ('in_date')
 
+class AssetTypeForm(ModelForm):
+    class Meta:
+        model = AssetType
+        exclude = ()
+
 class AssetCheckoutFancyForm(ModelForm):
     class Meta:
         model = AssetCheckout

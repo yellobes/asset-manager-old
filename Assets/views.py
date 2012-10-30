@@ -104,6 +104,14 @@ def render_object(request, type, id):
         TypeForm = AssetCheckoutFancyForm
         template = 'checkout.html'
         extra_data.asset_id = request.GET.get('asset_id', '')
+    elif type == 'exteralid':
+        Type = ExternalID
+        TypeForm = ExternalIDForm
+        template = 'externalid.html'
+    elif type == 'assettype':
+        Type = AssetType
+        TypeForm = AssetTypeForm
+        template = 'type.html'
     else:
         raise Http404
 

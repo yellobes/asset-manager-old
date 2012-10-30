@@ -9,7 +9,7 @@
 
 body {
     background-color: #DDD;
-    min-width: 200px;
+    min-width: 480px;
     width: 100%;
     margin: 0px;
     padding: 0px;
@@ -21,8 +21,8 @@ body {
     height: 2.4em;
     min-width: 200px;
     position: fixed;
-    background-color: rgba(248,248,248,.9);
-    box-shadow: 0 0 12px #aaa;
+    background-color: rgba(252,252,252,2.5);
+    box-shadow: 6px 2px 12px #aaa;
     filter: alpha(opacity = 50);
 
 }
@@ -40,6 +40,10 @@ body {
     margin: 0 auto;
 }
 
+#footer {
+    clear: both;
+}
+
 #page-footer {
     position:fixed;
     background:rgba(255,00,255,.2);
@@ -49,15 +53,17 @@ body {
 
 /*``````````````````````````````````````*/
 
-.menu-container {
-    float: right;
+#menu {
+    position: absolute;
+    margin: .90em 4px auto 0;
+    right: 0px;
 }
 
 .menu-header {
-    font-size: 1em;
     float:right;
+    bottom: 0px;
+    font-size: 1em;
     padding: 0 4px 0 0;
-    margin: .7em 4px auto 0;
 }
 
 .menu-header > * {
@@ -73,11 +79,14 @@ body {
 }
 
 .menu-header p {
+    padding: 0 3px 0 3px;
     border-right: 1px solid #000;
 }
 
 .menu-header p:first-child  {
     border-right: none;
+    -webkit-border-radius: 8px 8px 0px 0px;
+    border-radius: 8px 8px 0px 0px;
 }
 
 .menu-item {
@@ -140,7 +149,44 @@ body {
     border-spacing: 0px;
 }
 
+#asset-mod {
+    background-color: rgba(240,240,240,.8);
+    box-shadow: 0 0 20px 5px rgba(200,200,200,.6);
+    display: inline-block;
+    margin: 10px 10px;
+    max-width: 600px;
+    min-width: 280px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+#asset-mod > * > p, div, label {
+    background-color: rgba(255,255,255,.25);
+    box-shadow: 0 0 20px 5px rgba(255,255,255,.25);
+    display: inline-block;
+}
+
+
+#asset-mod > * > span {
+    display: inline-block;
+    width: 100%;
+}
+
+
+#asset-mod > * {
+    margin: 10px 0;
+}
+
+.form-title {
+    text-align: center;
+    text-shadow: 0 0 8px #FFF;
+}
+
 .results-table {} /* migrate the above to this */
+
+.asset-icon {
+    margin-top: 5px;
+}
 
 .hide {
     z-index:-1;
@@ -199,7 +245,6 @@ tr:first-child {
    box-shadow:         inset 0 0 1px #bbb;
 }
 
-/* TODO */
 li: {
 
 }

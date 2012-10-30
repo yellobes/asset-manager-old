@@ -19,25 +19,22 @@
             <li class="menu-item">
                 <p>Asset</p>
                 </li></a>
+            <a href="{% url newObject 'assettype' %}">
+            <li class="menu-item">
+                <p>Asset Type</p>
+                </li></a>
+
         </ul>
     </div>
 </div>
-<style type="text/css">
-    .menu-top {
-        float: right;
-    }
-    .menu {
-        float: right;
-    }
-</style>
 <script type="text/javascript">
     $(document).ready(function() {
-            $('.menu').hide();
+            $('.menu').css('visibility','hidden');
             });
 
     $('.menu-header').mouseover(function() {
-        $(this).children('ul').show();
+        $(this).children('ul').css('visibility','visible');
     }).mouseout(function() {
-        $(this).children('ul').hide();
+        $(this).children('ul').css('visibility','hidden');
     });
 </script>

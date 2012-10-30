@@ -6,30 +6,36 @@ from django.db.models.signals import post_save
 # The main class that the application is built around.
 # A more or less generic model to define an asset
 class Asset(models.Model) :
-    TYPE_CHOICES = (
-            ('desktop',             'Desktop'),
-            ('laptop',              'Laptop'),
-            ('tablet',              'Tablet'),
-            ('smartphone',          'Smartphone'),
-            ('printer',             'Printer'),
-            ('network device',      'network device'),
-            ('accessory/peripheral','Accessory/Peripheral'),
-            ('other',               'Other'),
-            ('software',            'Software'),
-            ('copier',              'Copier'),
-        )
+    #TYPE_CHOICES = (
+    #        ('desktop',             'Desktop'),
+    #        ('laptop',              'Laptop'),
+    #        ('tablet',              'Tablet'),
+    #        ('smartphone',          'Smartphone'),
+    #        ('printer',             'Printer'),
+    #        ('network device',      'network device'),
+    #        ('accessory/peripheral','Accessory/Peripheral'),
+    #        ('other',               'Other'),
+    #        ('software',            'Software'),
+    #        ('copier',              'Copier'),
+    #    )
     STATUS_CHOICES = (
             ('active',   'active'),
             ('inactive', 'inactive'),
             ('donated',  'donated'),
             ('recycled', 'recycled'),
         )
+    CHARGE_TYPE_CHOICES = (
+            ('Expense', 'expense'),
+            ('Capitol', 'capitol'),
+        )
     date_acquired = models.DateField()
     asset_status = models.CharField(choices=STATUS_CHOICES, max_length=100)
-    asset_type = models.CharField(choices=TYPE_CHOICES, max_length=100)
+    #asset_type = models.CharField(choices=TYPE_CHOICES, max_length=100)
+    asset_type = models.ForeignKey("AssetType")
     asset_code = models.CharField(max_length=100, unique=True)
     description = models.TextField(max_length=2000)
     acquired_value = models.CharField(max_length=1000)
+    charge_type = models.CharField(choices=CHARGE_TYPE_CHOICES, default='expense', max_length=100)
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     serial = models.CharField(max_length=200, unique=True)
@@ -86,6 +92,27 @@ class Note(models.Model):
 
     def __unicode__(self):
         return self.title
+
+
+# An external ID object for integration with other systems.
+class ExternalID(models.Model):
+    asset_id = models.ForeignKey("Asset")
+    external_id = models.CharField(max_length=200)
+    description = models.TextField(max_length=1000, blank=True)
+
+    def __unicode__(self):
+        return unicode(self.external_id)
+
+
+# Type class allows for typing of assets.
+class AssetType(models.Model):
+    type_name = models.CharField(max_length=200)
+    description = models.TextField(max_length=1000, blank=True)
+
+    def __unicode__(self):
+        return unicode(self.type_name)
+
+
 
 # No fking idea what this does...
 class Types(models.Model) :

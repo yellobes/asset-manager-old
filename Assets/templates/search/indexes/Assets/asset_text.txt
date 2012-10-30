@@ -4,6 +4,7 @@
 {{ object.asset_code }}
 {{ object.description }}
 {{ object.acquired_value }}
+{{ object.charge_type }}
 {{ object.make }}
 {{ object.model }}
 {{ object.serial }}
