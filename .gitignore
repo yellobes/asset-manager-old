@@ -4,6 +4,8 @@
 
 *.db
 
+build/**/*
+build/*
 whoosh_index/**/*
 whoosh_index/*
 static/**/*

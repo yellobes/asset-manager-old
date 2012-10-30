@@ -1,5 +1,5 @@
-dj-trunk
-========
+About dj-trunk
+==============
 
 A collection of apps that I have written, bundled into one project.
 
@@ -14,10 +14,18 @@ Anyway, most of these apps attempt to adhere to REST fairly strictly.
 Some of them, or parts of some of them might be useful to someone.
 
 
+This django project utilizes these fine 3rd party modules:
+
+django-haystack  :: github.com/toastdriven/django-haystack
+whoosh search    :: bitbucket.org/mchaput/whoosh
+modular settings :: github.com/brack3t/django-modular-settings
+
+
+
 ***
 
 Assets
 ------
 
-Assets is an application to manage your company's assets!
+Assets is an application to manage your company's assets! Light and simple, it's built around search functionality provided by the haystack api. Supports, images, supporting documents, and much, much more!
 
