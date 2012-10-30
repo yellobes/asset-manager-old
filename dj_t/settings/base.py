@@ -1,29 +1,9 @@
 # Django settings for django-trunk project.
 import os
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
-
-ADMINS = (
-    'peter', 'pnovotnak@flexion.us'
-)
-
-MANAGERS = ADMINS
-
 LOGIN_REDIRECT_URL = '/assets/'
 
 ACCOUNT_ACTIVATION_DAYS = 1
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': './dj-trunk.db',       # DB/ path to database file (sqlite)
-        'USER': '',                # !(sqlite3)
-        'PASSWORD': '',            # Not used with sqlite3
-        'HOST': '',                # Empty string for localhost !(sqlite3)
-        'PORT': '',                # Empty string for default. !(sqlite3)
-    }
-}
 
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # On Unix systems, a value of None will cause Django to use the same
@@ -82,9 +62,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
-
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = 'a0!s3lmp$o8ls=o&amp;qrnogqfbes_z1roslaj((oei*wjdr_akvl'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (

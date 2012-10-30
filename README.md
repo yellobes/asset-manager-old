@@ -16,10 +16,10 @@ Some of them, or parts of some of them might be useful to someone.
 
 This django project utilizes these fine 3rd party modules:
 
-django-haystack  :: github.com/toastdriven/django-haystack
-whoosh search    :: bitbucket.org/mchaput/whoosh
-modular settings :: github.com/brack3t/django-modular-settings
-
+django-haystack     :: github.com/toastdriven/django-haystack
+whoosh search       :: bitbucket.org/mchaput/whoosh
+modular settings    :: github.com/brack3t/django-modular-settings
+django-registration :: bitbucket.org/ubernostrum/django-registration
 
 
 ***

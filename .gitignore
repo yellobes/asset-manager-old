@@ -12,5 +12,6 @@ static/**/*
 static/*
 media/**/*
 media/*
-
+dj_t/settings/*
+!dj_t/settings/base.py
 
