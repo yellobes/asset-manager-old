@@ -5,7 +5,10 @@
 *.db
 
 whoosh_index/**/*
+whoosh_index/*
 static/**/*
+static/*
 media/**/*
+media/*
 
 

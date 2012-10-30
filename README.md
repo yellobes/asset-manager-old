@@ -13,3 +13,11 @@ The views are not class based.
 Anyway, most of these apps attempt to adhere to REST fairly strictly.
 Some of them, or parts of some of them might be useful to someone.
 
+
+***
+
+Assets
+------
+
+Assets is an application to manage your company's assets!
+
