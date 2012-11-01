@@ -19,10 +19,9 @@
     {% for field in object_form %}
     <span {% if field.field.required %}class="required {% endif %}{% if field.label %}apply-watermark">{% endif %}
       {{ field.label_tag }}: {{ field }} {{ field.errors }}
-      <span>{{ field.help_text }}</span>
+      <span>{{ field.help_text }}<br><a href="{% url assetsHelp 'import-assets' %}">help</a></span>
     </span>
     {% endfor %}
-    <input name='PUT' type='hidden' />
     <input class="submitButton"
     id="{{ 1 }}" type="submit" value="Save" />
   </form>

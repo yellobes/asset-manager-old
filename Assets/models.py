@@ -59,6 +59,12 @@ class AssetCheckout(models.Model):
     def __unicode__(self):
         return unicode(self.pk)
 
+class AssetImport(models.Model):
+    csv = models.FileField(upload_to='tmp/',)
+    csv.help_text = 'Select a CSV file to import'
+    def __unicode__(self):
+        return unicode(self.csv)
+
 # A simple model that produces a form for search pages
 class SearchForm(forms.Form) :
     search = forms.CharField(max_length=100)

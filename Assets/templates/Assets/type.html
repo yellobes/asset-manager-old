@@ -3,32 +3,36 @@
 {% extends 'Assets/element.html' %}
 
 {% block header %}
-    <a href="/assets/">&lsaquo; Asset index</a> <span id="newtype"> &middot; <a href="{% url newObject 'assettype' %}">New Asset Type &rsaquo;</a></span>
-    <h1 class="form-title">Asset Type Form</h1>
-    <div id="pre-existing types">
-      <hr>
-      <span style="display:inline-block;">
-        <p>
-          These types already exist:
-        </p>
-      </span>
-      <ul style="display:inline-block;">
-        {% for type in extra_data.types %}
-        <li><a href="{% url Assets.views.element 'assettype' type.id %}">{{ type }}</a></li>
-        {% endfor %}
-      </ul>
-      <hr>
-    </div>
+  <br>
+  <a href="{% url assetIndex %}">&lsaquo; Asset index</a>
+  <span id="newtype"> &middot; 
+    <a href="{% url newObject 'assettype' %}">New Asset Type &rsaquo;</a>
+  </span>
+  <hr>
+  <h1 class="form-title">Asset Type Form</h1>
+  <div id="pre-existing-types">
+    <hr>
+    <span>
+      <p>
+        These types already exist:
+      </p>
+    </span>
+    <ul>
+      {% for type in extra_data.types %}
+      <li><a href="{% url assetElement 'assettype' type.id %}">{{ type }}</a></li>
+      {% endfor %}
+    </ul>
+    <hr>
+  </div>
 {% endblock %}
 
 {% block body %}
-    <form id="asset-mod" enctype="multipart/form-data" method="POST">
-      {% csrf_token %}
-      {{ object_form.as_p }}
-      <input name='PUT' type='hidden' />
-      <input class="submitButton"
-      id="{{ 1 }}" type="submit" value="Save" />
-    </form>
-    {% block extension %}{% endblock %}
+  <form id="asset-mod" enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    {{ object_form.as_p }}
+    <input name='PUT' type='hidden' />
+    <input class="submitButton"
+    id="{{ 1 }}" type="submit" value="Save" />
+  </form>
 {% endblock %}
 

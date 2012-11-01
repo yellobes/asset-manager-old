@@ -52,3 +52,6 @@ class AssetCheckoutFancyForm(ModelForm):
                 'description',
                 )
 
+class AssetImportForm(ModelForm):
+    class Meta:
+        model = AssetImport

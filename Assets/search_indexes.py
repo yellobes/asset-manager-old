@@ -3,6 +3,9 @@ from haystack.indexes import *
 from haystack import site
 from Assets.models import Asset
 
+from django.contrib.auth.models import User
+
+
 class AssetIndex(SearchIndex):
     text = CharField(document=True, use_template=True)
     date_acquired = CharField(model_attr='date_acquired',)
@@ -19,6 +22,18 @@ class AssetIndex(SearchIndex):
 
     def index_queryset(self):
         return Asset.objects.all()
+
+class UserIndex(SearchIndex):
+    text = CharField(document=True, use_template=True)
+    username = CharField(model_attr='username')
+    first_name = CharField(model_attr='first_name')
+    last_name = CharField(model_attr='last_name')
+    email = CharField(model_attr='email')
+    def get_model(self):
+        return User
+
+    def index_queryset(self):
+        return User.objects.all()
 
 site.register(Asset, AssetIndex)
 

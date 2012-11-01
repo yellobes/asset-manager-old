@@ -1,0 +1,28 @@
+#body {
+    min-height: 600px;
+    text-align: left;
+    display: block;
+    max-width: 800px;
+    margin: 0 auto;
+    padding-bottom: 200px;
+}
+
+#footer {
+    padding: 20px 0;
+    border-top: 1px solid #555;
+}
+
+#footer span {
+    margin: 2px 5px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#footer .separator {
+    border-left: 1px solid #999;
+    display: inline-block;
+    vertical-align: middle;
+    width: 0px;
+    height: 4em;
+    margin: 0 10px;
+}

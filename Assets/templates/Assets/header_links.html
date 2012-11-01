@@ -1,37 +1,50 @@
 <!-- RD9OJ -->
 <div id="menu">
-    <div class="menu-header">
-        <p>Admin</p>
-        <ul class="menu">
-            <a href="/admin">
-            <li class="menu-item">
-            <p>Admin Console</p>
-            </li></a>
-            <a href="/admin/logout">
-            <li class="menu-item">
-                <p>Logout</p>
-            </li></a>
-        </ul>
-    </div>
-    <div class="menu-header">
-        <p>Create</p>
-        <ul class="menu">
-            <a href="{% url newObject 'asset' %}">
-            <li class="menu-item">
-                <p>Asset</p>
-                </li></a>
-            <a href="{% url newObject 'assettype' %}">
-            <li class="menu-item">
-                <p>Asset Type</p>
-                </li></a>
-
-        </ul>
-    </div>
+  <div class="menu-header">
+    <p>Admin</p>
+    <ul class="menu">
+      <a href="/admin">
+        <li class="menu-item">
+        <p>Admin Console</p>
+        </li>
+      </a>
+      <a href="/admin/logout">
+        <li class="menu-item">
+          <p>Logout</p>
+        </li>
+      </a>
+    </ul>
+  </div>
+  <div class="menu-header">
+    <p>Create</p>
+    <ul class="menu">
+      <a href="{% url newObject 'asset' %}">
+        <li class="menu-item">
+          <p>Asset</p>
+        </li>
+      </a>
+      <a href="{% url newObject 'assettype' %}">
+        <li class="menu-item">
+          <p>Asset Type</p>
+        </li>
+      </a>
+    </ul>
+  </div>
+  <div class="menu-header">
+    <p>Import / Export</p>
+    <ul class="menu">
+      <a href="{% url assetCollection 'assets' %}">
+        <li class="menu-item">
+          <p>Import Assets</p>
+        </li>
+      </a>
+    </ul>
+  </div>
 </div>
 <script type="text/javascript">
   $(document).ready(function() {
-      $('.menu-header').css('width', $('.menu-header').width() + 'px');
-      $('.menu').hide();
+    $('.menu-header').css('width', $('.menu-header').width() + 'px');
+    $('.menu').hide();
   });
   $('.menu-header').mouseover(function() {
     $(this).children('ul').show();

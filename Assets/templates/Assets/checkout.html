@@ -1,43 +1,21 @@
 <!-- 3W0NF -->
 
 {% extends 'Assets/element.html' %}
-{% block object_as_p %}
 
-<form id="asset-checkout" enctype="multipart/form-data" method="POST">
+{% block header %}
+  <h1>Check Out {{ extra_data.asset_name }}</h1>
+{% endblock %}
+
+{% block body %}
+  <form id="asset-checkout" enctype="multipart/form-data" method="POST">
     {% csrf_token %}
     {{ object_form.as_p }}
     <input name='asset_id' value='{{ extra_data.asset_id }}' type='hidden' />
     <input name='PUT' type='hidden' />
     <input class="submitButton"
     type="submit" value="Save" />
-</form>
-
-{% block extension %}{% endblock %}
-
-<script type="text/javascript">
-// append a "now" button to date fields
-$('input').filter(function() {
-        return this.id.match(/\w+date/);
-    }).parent().append(
-        "<button class='datebtn' type='button'>now</button>");
-
-// find the buttons created above, and attach a handler to insert date/time
-$('.datebtn').click(function() {
-    var d = new Date();
-    var se = "-";
-    var mo = parseInt(d.getMonth()) + 1;
-    var day = d.getDate();
-    var yr = d.getFullYear();
-    var dateTime = yr + se + mo + se + day;
-    $(this).parent().find('input').val(dateTime);
- });
-</script>
-
-<style type="text/css">
-    .errorlist {
-        background-color: #F00;
-    }
-</style>
-
+  </form>
 {% endblock %}
+
+
 

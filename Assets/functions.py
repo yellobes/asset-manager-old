@@ -14,6 +14,12 @@ def checkout_info(obj) :
     return x
 
 
+def get_model_fields(model):
+    fields = model._meta.fields
+    field_names = []
+    for field in fields:
+        field_names.append(field.attname)
+    return field_names
 
 def get_object_fields(obj):
     field_list = obj._meta.local_fields
@@ -36,4 +42,6 @@ def handle_upload(f):
     for chunk in f.chunks():
         destination.write(chunk)
     destination.close()
+
+
 
