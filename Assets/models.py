@@ -16,17 +16,23 @@ class Asset(models.Model) :
             ('Expense', 'expense'),
             ('Capitol', 'capitol'),
         )
-    date_acquired = models.DateField()
+    #Location    Serial Number
+    acquisition_date = models.DateField()
+    description = models.TextField(max_length=2000)
+    acquisition_value = models.CharField(max_length=1000)
+    serial_number = models.CharField(max_length=200, unique=True)
+    asset_location = models.ForeignKey("Location")
+
+
+    external_id = models.CharField(max_length=200, blank=True)
+
     asset_status = models.CharField(choices=STATUS_CHOICES, max_length=100)
     asset_type = models.ForeignKey("AssetType")
-    external_id = models.CharField(max_length=200, blank=True)
+
     asset_code = models.CharField(max_length=100, unique=True)
-    description = models.TextField(max_length=2000)
-    acquired_value = models.CharField(max_length=1000)
     charge_type = models.CharField(choices=CHARGE_TYPE_CHOICES, default='expense', max_length=100)
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
-    serial = models.CharField(max_length=200, unique=True)
     sku = models.CharField(max_length=200, blank=True)
     photo = models.ImageField(upload_to='img/', blank=True)
     manual = models.FileField(upload_to='manual/', blank=True)
@@ -92,6 +98,16 @@ class Note(models.Model):
 class ExternalID(models.Model):
     asset_id = models.ForeignKey("Asset")
     external_id = models.CharField(max_length=200)
+    description = models.TextField(max_length=1000, blank=True)
+
+    def __unicode__(self):
+        return unicode(self.external_id)
+
+
+class Location(models.Model):
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    short_state = models.CharField(max_length=3)
     description = models.TextField(max_length=1000, blank=True)
 
     def __unicode__(self):

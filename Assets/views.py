@@ -37,7 +37,6 @@ def search(request):
                     )
             if form.is_valid():
                 query = form.cleaned_data['q']
-                print 'Valid search ::', query
                 results = form.search()
 
         else: results = sqs
@@ -66,7 +65,6 @@ def user_search(request):
                     )
             if form.is_valid():
                 query = form.cleaned_data['q']
-                print 'Valid search ::', query
                 results = form.search()
 
         else: results = sqs
@@ -83,7 +81,6 @@ def user_search(request):
 
 
 def collection(request, type):
-    print 'collection', type
     if request.method == 'GET':
         return render_type(request, type)
     elif  request.method == 'POST'  :
@@ -102,7 +99,6 @@ def element(request, type, id) :
         if 'PUT' in request.POST:
             return create_object(request, type, id)
         elif 'delete' in request.POST:
-            print 'delete'
             return kill_object(request, type, id)
 
 
@@ -205,9 +201,7 @@ def create_object(request, type, id):
 
 
     if object_form.is_valid():
-        print 'got a valid form'
         object_form.save()
-        print 'updating search index'
         django.core.management.call_command("update_index")
         return redirect('assetIndex')
         #------------------------------------------------------
@@ -243,21 +237,17 @@ def kill_object(request, type, id):
 
 def render_type(request, type):
 
-    if type == 'checkout' :
+    if type == 'checkout':
         type_object = AssetCheckout
-
-    elif type == 'asset' :
+    elif type == 'asset':
         type_object = Asset
-
-    elif type == 'assets' : # Nasty hack to allow csv import
+    elif type == 'assets': # Nasty hack to allow csv import
         return render_object(request, type, 0)
-
-    elif type == 'user' :
+    elif type == 'user':
         type_object = User
 
     else :
         logger.critical(' Nasty request :: ' + str(request) )
-        print request
         return HttpResponseForbidden()
 
     collection = type_object.objects.all()
@@ -287,7 +277,6 @@ def render_type(request, type):
 
 
 def help(request, page):
-    print page
     if page in [
             'import-assets',
             ]:

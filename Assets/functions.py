@@ -13,7 +13,6 @@ def checkout_info(obj) :
         x = x[0]
     return x
 
-
 def get_model_fields(model):
     fields = model._meta.fields
     field_names = []
