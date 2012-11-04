@@ -1,41 +1,41 @@
 <!-- RD9OJ -->
 <div id="menu">
   <div class="menu-header">
-    <p>Admin</p>
+    <p><a href="#">Admin</p>
     <ul class="menu">
       <a href="/admin">
         <li class="menu-item">
-        <p>Admin Console</p>
+        <p><a href="#">Admin Console</p>
         </li>
       </a>
       <a href="/admin/logout">
         <li class="menu-item">
-          <p>Logout</p>
+          <p><a href="#">Logout</p>
         </li>
       </a>
     </ul>
   </div>
   <div class="menu-header">
-    <p>Create</p>
+    <p><a href="#">Create</p>
     <ul class="menu">
       <a href="{% url newObject 'asset' %}">
         <li class="menu-item">
-          <p>Asset</p>
+          <p><a href="#">Asset</p>
         </li>
       </a>
       <a href="{% url newObject 'assettype' %}">
         <li class="menu-item">
-          <p>Asset Type</p>
+          <p><a href="#">Asset Type</p>
         </li>
       </a>
     </ul>
   </div>
   <div class="menu-header">
-    <p>Import / Export</p>
+    <p><a href="#">Import / Export</p>
     <ul class="menu">
       <a href="{% url assetCollection 'assets' %}">
         <li class="menu-item">
-          <p>Import Assets</p>
+          <p><a href="#">Import Assets</p>
         </li>
       </a>
     </ul>

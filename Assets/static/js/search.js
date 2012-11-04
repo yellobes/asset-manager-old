@@ -10,10 +10,27 @@ function ajax(query){
     var domain = document.domain;
     var content = "#content"
     var indicator = "#search-running"
-    $(indicator).show()
+    var indicator_padding_top = $(indicator).data('orig_padding_top');
+
+    if ( !$(indicator).is(':animated') ) {
+        $(indicator).animate({
+            width: 'toggle',
+            paddingTop: '0px'
+        }, 100, 'linear' );
+    }
+
     $(content).load(
     "/assets/search?q="+query,
     function() {
-        $(indicator).hide();
+        var wait = setInterval(function() {  
+  
+            if ( !$(indicator).is(':animated')) {  
+                clearInterval(wait);
+                $(indicator).animate({
+                    width: 'toggle',
+                    paddingTop: indicator_padding_top
+                }, 100, 'linear');
+            } 
+        }, 10);    
     });
 }

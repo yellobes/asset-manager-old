@@ -28,6 +28,7 @@ class Asset(models.Model) :
     asset_type = models.ForeignKey("AssetType", blank=True, )
     asset_code = models.CharField(max_length=100, unique=True, blank=True, )
     charge_type = models.CharField(choices=CHARGE_TYPE_CHOICES, default='expense', max_length=100, blank=True, )
+
     make = models.CharField(max_length=100, blank=True, )
     model = models.CharField(max_length=100, blank=True, )
     sku = models.CharField(max_length=200, blank=True, )

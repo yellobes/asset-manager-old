@@ -1,5 +1,50 @@
 <input id="search" placeholder="&nbsp;search&#8230;" class="float-left transparent-input" type="text" autofocus="on" onkeyup="search(this);">
-<script src="{{ STATIC_URL }}/js/search.js"></script>
 
-<img src="{{ STATIC_URL }}/img/loading.gif" id="search-running" />
+<script src="{{ STATIC_URL }}js/search.js"></script>
+
+<img src="{{ STATIC_URL }}img/loading.gif" id="search-running" />
+
+
+{% for x in search_filters %}
+{% endfor %}
+
+<!-- 229N3 -->
+<div class="sticky-tab">
+  <div class="sticky-menu-header">
+    <p><a>Filters</a></p>
+    <ul class="menu">
+      <a href="/admin">
+        <li class="menu-item">
+        <p>Admin Console</p>
+        </li>
+      </a>
+      <a href="/admin/logout">
+        <li class="menu-item">
+          <p>Logout</p>
+        </li>
+      </a>
+    </ul>
+  </div>
+</div>
+  
+
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    $('#search-running').data('orig_padding_top', $("#search-running").css('padding-top'));
+
+    $('.sticky-menu-header, .menu-header').each(function(){
+      $(this).css('width', $('.sticky-menu-header').width() + 'px');
+    });
+    $('.menu').hide();
+  });
+
+  $('.sticky-menu-header').click(function() {
+    $(this).children('ul').toggle();
+  });
+
+</script>
+
+
+<!-- /229N3 -->
 
