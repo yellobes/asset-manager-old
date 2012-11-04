@@ -40,8 +40,8 @@ def import_csv(_file, model):
                         print model._meta.get_field( header_links[index][1].replace('_id','') ).rel.to
                     index += 1
 
-                print obj
-                print ' line:', y
+                print '>>> ',obj
+                
                     
             y += 1
 

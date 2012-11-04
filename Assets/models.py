@@ -20,26 +20,23 @@ class Asset(models.Model) :
     acquisition_date = models.DateField()
     description = models.TextField(max_length=2000)
     acquisition_value = models.CharField(max_length=1000)
-    serial_number = models.CharField(max_length=200, unique=True)
+    serial_number = models.CharField(max_length=200, unique=True, blank=True, )
     asset_location = models.ForeignKey("Location")
 
-
-    external_id = models.CharField(max_length=200, blank=True)
-
-    asset_status = models.CharField(choices=STATUS_CHOICES, max_length=100)
-    asset_type = models.ForeignKey("AssetType")
-
-    asset_code = models.CharField(max_length=100, unique=True)
-    charge_type = models.CharField(choices=CHARGE_TYPE_CHOICES, default='expense', max_length=100)
-    make = models.CharField(max_length=100)
-    model = models.CharField(max_length=100)
-    sku = models.CharField(max_length=200, blank=True)
-    photo = models.ImageField(upload_to='img/', blank=True)
-    manual = models.FileField(upload_to='manual/', blank=True)
+    external_id = models.CharField(max_length=200, blank=True, )
+    asset_status = models.CharField(choices=STATUS_CHOICES, max_length=100, blank=True, )
+    asset_type = models.ForeignKey("AssetType", blank=True, )
+    asset_code = models.CharField(max_length=100, unique=True, blank=True, )
+    charge_type = models.CharField(choices=CHARGE_TYPE_CHOICES, default='expense', max_length=100, blank=True, )
+    make = models.CharField(max_length=100, blank=True, )
+    model = models.CharField(max_length=100, blank=True, )
+    sku = models.CharField(max_length=200, blank=True, )
+    photo = models.ImageField(upload_to='img/', blank=True, )
+    manual = models.FileField(upload_to='manual/', blank=True, )
     manual.help_text="Please upload an archive with ALL manual documents"
-    drivers = models.FileField(upload_to='drivers/', blank=True)
+    drivers = models.FileField(upload_to='drivers/', blank=True, )
     drivers.help_text="Upload an archive with associated drivers"
-    invoices = models.FileField(upload_to='invoices/', blank=True)
+    invoices = models.FileField(upload_to='invoices/', blank=True, )
     invoices.help_text="Upload an archive of invoices or other paperwork"
     @models.permalink
     def get_absolute_url(self):
