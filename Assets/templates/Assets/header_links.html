@@ -1,46 +1,49 @@
 <!-- RD9OJ -->
 <div id="menu">
+
   <div class="menu-header">
-    <p><a href="#">Admin</p>
+    <p><a href="#">Admin</a></p>
     <ul class="menu">
       <a href="/admin">
         <li class="menu-item">
-        <p><a href="#">Admin Console</p>
+        <p><a href="#">Admin Console</a></p>
         </li>
       </a>
       <a href="/admin/logout">
         <li class="menu-item">
-          <p><a href="#">Logout</p>
+          <p><a href="#">Logout</a></p>
         </li>
       </a>
     </ul>
   </div>
   <div class="menu-header">
-    <p><a href="#">Create</p>
+    <p><a href="#">Create</a></p>
     <ul class="menu">
       <a href="{% url newObject 'asset' %}">
         <li class="menu-item">
-          <p><a href="#">Asset</p>
+          <p><a href="#">Asset</a></p>
         </li>
       </a>
       <a href="{% url newObject 'assettype' %}">
         <li class="menu-item">
-          <p><a href="#">Asset Type</p>
+          <p><a href="#">Asset Type</a></p>
         </li>
       </a>
     </ul>
   </div>
   <div class="menu-header">
-    <p><a href="#">Import / Export</p>
+    <p><a href="#">Import / Export</a></p>
     <ul class="menu">
       <a href="{% url assetCollection 'assets' %}">
         <li class="menu-item">
-          <p><a href="#">Import Assets</p>
+          <p><a href="#">Import Assets</a></p>
         </li>
       </a>
     </ul>
   </div>
+  
 </div>
+
 <script type="text/javascript">
   $(document).ready(function() {
     $('.menu-header').css('width', $('.menu-header').width() + 'px');
