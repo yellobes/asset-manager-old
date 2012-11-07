@@ -1,46 +1,92 @@
-<input id="search" placeholder="&nbsp;search&#8230;" class="float-left transparent-input" type="text" autofocus="on" onkeyup="search(this);">
+<input id="search" placeholder="&nbsp;search" class="float-left search-input" type="text" autofocus="on">
 
-<script src="{{ STATIC_URL }}js/search.js"></script>
+<input id="exclude" placeholder="&nbsp;exclude" class="float-left filter-input" type="text">
 
-<img src="{{ STATIC_URL }}img/loading.gif" id="search-running" />
+<!--img src="{{ STATIC_URL }}img/loading.gif" id="search-running" /-->
 
 
-{% for x in search_filters %}
-{% endfor %}
 
 <!-- 229N3 -->
 <div class="sticky-tab">
-  <div class="sticky-menu-header">
-    <p><a href="#">Filters</a></p>
-    <ul class="menu">
-      <a href="/admin">
-        <li class="menu-item">
-        <p>Admin Console</p>
-        </li>
-      </a>
-      <a href="/admin/logout">
-        <li class="menu-item">
-          <p>Logout</p>
-        </li>
-      </a>
+  <div class="sticky-tab-wrapper">
+    <p><a style="width:100%; display:block;" class="sticky-tab-header" href="#" style="width: 200px">Filters</a></p>
+    <ul class="menu" id="search-filters">
+    {% for x in search_filters %}
+    {% endfor %}
     </ul>
   </div>
 </div>
-  
+
+<a href="#" class="float-left" id="add-search-filter">+</a>
 
 <script type="text/javascript">
 
+  var filter_element = '<li><input class="search-filter" type="text" placeholder="&nbsp;filter" style="width:95%;"><a href="#" class="remove-filter">-</a></li>'
+
   $(document).ready(function() {
-    $('#search-running').data('orig_padding_top', $("#search-running").css('padding-top'));
 
-    $('.sticky-menu-header, .menu-header').each(function(){
-      $(this).css('width', $('.sticky-menu-header').width() + 'px');
+    if ( $('#search-filters').children('li').length < 1 ) {
+      $('#search-filters').hide();
+      $('#add-search-filter').hide();
+    }
+
+    $('.sticky-tab-header').click(function() {
+      if ( $('#search-filters').children('li').length > 0 ) {
+        y = $('.search-filter');
+        y.each(function() {
+          if( $(this).val() == '' ) {
+            $(this).parent('li').remove();
+          }
+        });
+      }
+
+      if ( $('.search-filter').length == 0 ) {
+        $('#search-filters').append(filter_element);
+        $('#search-filters').toggle(300);
+        $('#add-search-filter').toggle(400);
+      }
     });
-    $('.menu').hide();
-  });
 
-  $('.sticky-menu-header').click(function() {
-    $(this).children('ul').toggle();
+    $('#add-search-filter').click(function(){
+      $('#search-filters').show(200, function() {
+        $('#search-filters').append(filter_element);
+        $('#search-filters').children('li').last().toggle();
+        $('#search-filters').children('li').last().toggle(400);
+      });
+    });
+
+    $('.remove-filter').live('click', function(){
+      x = $(this).parent();
+      x.toggle(200, function(){
+        x.remove();
+        if ( $('#search-filters').children('li').length < 1 ) {
+          $('#search-filters').hide(1000);
+          $('#add-search-filter').toggle(400);
+        }
+
+      });
+    });
+
+    // $("#search-running").bind("ajaxSend", function(){
+    //     $(this).stop(true,true).show(100);
+    // }).bind("ajaxComplete", function(){
+    //     $(this).stop(true,true).hide(100);
+    // });
+
+    $('#search').keyupQueue(function(){
+      filters = ''
+      exclude = ''
+      $('.search-filter').each(function(){ filters += ( $(this).val() + ',' ) });
+      exclude = $('#exclude').val();
+      $.get('/assets/search',
+        { 'q': $('#search').val(),
+          '!': exclude,
+          '|': filters },
+        function(responseText){
+          $("#content").html(responseText);
+        }
+      );
+    });
   });
 
 </script>

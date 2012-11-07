@@ -8,14 +8,14 @@ from django.contrib.auth.models import User
 
 class AssetIndex(SearchIndex):
     text = CharField(document=True, use_template=True)
-    date_acquired = CharField(model_attr='date_acquired',)
+    acquisition_date = CharField(model_attr='acquisition_date',)
     asset_type = CharField(model_attr='asset_type',)
     asset_code = CharField(model_attr='asset_code',)
     description = CharField(model_attr='description',)
-    acquired_value = CharField(model_attr='acquired_value')
+    acquisition_value = CharField(model_attr='acquisition_value')
     make = CharField(model_attr='make',)
     model = CharField(model_attr='model',)
-    serial = CharField(model_attr='serial',)
+    serial_number = CharField(model_attr='serial_number',)
     sku = CharField(model_attr='sku',)
     def get_model(self):
         return Asset

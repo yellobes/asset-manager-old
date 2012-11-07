@@ -68,41 +68,41 @@ body {
 
 }
 
-.sticky-tab div {
-    max-height: 1px;
-}
-
-.sticky-menu-header {
-    float:right;
+.sticky-tab {
     bottom: 0px;
     font-size: 1em;
     padding: 0 4px 0 0;
 }
 
-.sticky-menu-header > * {
+.sticky-tab > * {
     border: 1px solid white;
     background-color: rgba(0, 200, 0, .08);
 }
 
-.sticky-menu-header p {
+.sticky-tab p {
     padding: 0 3px 0 3px;
     border-right: 1px solid #000;
 }
 
-.sticky-menu-header p:first-child  {
+.sticky-tab p:first-child  {
     border-right: none;
     -webkit-border-radius: 0px 8px 0px 0px;
     border-radius: 0px 8px 0px 0px;
 }
 
-.sticky-menu-header ul {
+.sticky-tab-wrapper {
+    -webkit-border-radius: 0px 8px 0px 0px;
+    border-radius: 0px 8px 0px 0px;
+}
+
+.sticky-tab ul {
     border: 1px solid #00C800;
     border: 1px solid rgba(0,200,0,.1);
     -webkit-border-radius: 0px 0px 8px 8px;
     border-radius: 0px 0px 8px 8px;   
 }
 
-.sticky-menu-header .menu-item {
+.sticky-tab .menu-item {
     background-color: rgba(175,240,175,.9);
     border: 1px solid #FFF;
 }
@@ -146,7 +146,6 @@ body {
 
 .menu-header p {
     padding: 0 3px 0 3px;
-    border-right: 1px solid #000;
 }
 
 .menu-header p:first-child  {
@@ -186,9 +185,15 @@ body {
     background:rgba(230,230,230,.8);
 }
 
-.transparent-input {
+.search-input {
     margin:6px;
-    background-color: rgba(220,200,220,.95);
+    background-color: rgba(230,230,230,.95);
+}
+
+.filter-input {
+    margin:6px;
+    background-color: rgba(240,210,220,.95);
+    width: 100px;
 }
 
 .float-left {
@@ -381,7 +386,6 @@ h1, h2, h3, h4 {
 #search-running {
     float: left;
     display: none;
-    padding-top: 18px;
 }
 
 #pre-existing-types > ul {
@@ -396,4 +400,18 @@ h1, h2, h3, h4 {
     display: inline-block;
     vertical-align: top;
     margin-top: 2em;
+}
+
+#add-search-filter {
+    margin-top: .5em;
+    text-shadow: 0 0 10px #0F0;
+}
+
+.remove-filter {
+    text-shadow: 0 0 4px #F00,
+        0 0 8px #F00,
+        0 0 10px #F00,
+        0 0 12px #F00;
+    margin-right: -15px;
+    float: right;
 }

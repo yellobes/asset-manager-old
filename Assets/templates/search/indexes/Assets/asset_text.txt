@@ -1,13 +1,13 @@
-{{ object.date_acquired }}
+{{ object.acquisition_date }}
 {{ object.asset_status }}
 {{ object.asset_type }}
 {{ object.asset_code }}
 {{ object.description }}
-{{ object.acquired_value }}
+{{ object.acquisition_value }}
 {{ object.charge_type }}
 {{ object.make }}
 {{ object.model }}
-{{ object.serial }}
+{{ object.serial_number }}
 {{ object.sku }}
 {{ object.photo }}
 {{ object.manual }}

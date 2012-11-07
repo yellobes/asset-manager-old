@@ -109,7 +109,7 @@ class Location(models.Model):
     description = models.TextField(max_length=1000, blank=True)
 
     def __unicode__(self):
-        return unicode(self.external_id)
+        return unicode(self.city)
 
 
 # Type class allows for typing of assets.

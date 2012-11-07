@@ -1,36 +1,15 @@
-function search(field){
-    ajax($(field).val());
-    console.log('search')
-}
+// Peter Novotnak :: Flexion, 2012
 
-function ajax(query){
-    var query0 = encodeURI(query)
-    query = query0
-    query0 = null
-    var domain = document.domain;
-    var content = "#content"
-    var indicator = "#search-running"
-    var indicator_padding_top = $(indicator).data('orig_padding_top');
-
-    if ( !$(indicator).is(':animated') ) {
-        $(indicator).animate({
-            width: 'toggle',
-            paddingTop: '0px'
-        }, 100, 'linear' );
-    }
-
-    $(content).load(
-    "/assets/search?q="+query,
-    function() {
-        var wait = setInterval(function() {  
-  
-            if ( !$(indicator).is(':animated')) {  
-                clearInterval(wait);
-                $(indicator).animate({
-                    width: 'toggle',
-                    paddingTop: indicator_padding_top
-                }, 100, 'linear');
-            } 
-        }, 10);    
+jQuery.fn.keyupQueue = function(callback, delay) {
+    return this.each(function(){
+        var timer = null;
+        $(this).keyup(function() {
+            if (timer)
+                window.clearTimeout(timer);
+            timer = window.setTimeout( function() {
+                timer = null;
+                callback();
+            }, delay || 200);
+        });
     });
-}
+};

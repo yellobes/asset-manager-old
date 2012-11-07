@@ -28,6 +28,12 @@ def search(request):
     if ( request.method == 'GET' ) | ( request.method == 'POST' ):
         sqs = SearchQuerySet().models(Asset)
 
+        for x in request.GET.getlist('|'):
+            sqs = sqs.filter(content=x)
+
+        for x in request.GET.getlist('!'):
+            sqs = sqs.exclude(content=x)
+
         if request.GET.get('q'):
             suggestion = None
             form = ModelSearchForm(
@@ -139,6 +145,11 @@ def render_object(request, type, id):
         TypeForm = AssetTypeForm
         template = 'type.html'
         extra_data.types = Type.objects.all()[:10]
+    elif type == 'location':
+        Type = Location
+        TypeForm = LocationForm
+        template = 'type.html'
+        extra_data.types = Type.objects.all()[:10]
     else:
         raise Http404
 
@@ -177,6 +188,11 @@ def create_object(request, type, id):
         Type = AssetType
         TypeForm = AssetTypeForm
         template  = 'Assets/type.html'
+        extra_data.types = Type.objects.all()[:10]
+    elif type == 'location':
+        Type = Location
+        TypeForm = LocationForm
+        template  = 'Assets/location.html'
         extra_data.types = Type.objects.all()[:10]
     elif type == 'assets':
         Type = AssetImport()

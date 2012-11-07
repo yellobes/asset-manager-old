@@ -1,6 +1,5 @@
 <!-- RD9OJ -->
 <div id="menu">
-
   <div class="menu-header">
     <p><a href="#">Admin</a></p>
     <ul class="menu">
@@ -29,6 +28,11 @@
           <p><a href="#">Asset Type</a></p>
         </li>
       </a>
+      <a href="{% url newObject 'location' %}">
+        <li class="menu-item">
+          <p><a href="#">Location</a></p>
+        </li>
+      </a>
     </ul>
   </div>
   <div class="menu-header">
@@ -41,18 +45,23 @@
       </a>
     </ul>
   </div>
-  
 </div>
 
 <script type="text/javascript">
+
   $(document).ready(function() {
-    $('.menu-header').css('width', $('.menu-header').width() + 'px');
-    $('.menu').hide();
+
+    $('.menu-header').mouseenter(function() {
+      $(this).children('ul').show(100)
+    }).mouseleave(function() {
+      $(this).children('ul').hide(100);
+    });
+
+    $('.menu-header').each(function() {
+      $(this).width( $(this).children('ul').width() );
+      $(this).children('ul').hide();
+    });
   });
-  $('.menu-header').mouseover(function() {
-    $(this).children('ul').show();
-  }).mouseout(function() {
-    $(this).children('ul').hide();
-  });
+
 </script>
 <!-- /RD9OJ -->

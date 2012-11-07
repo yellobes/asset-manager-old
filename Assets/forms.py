@@ -14,15 +14,15 @@ class AssetSearch(SearchForm):
     class Meta:
         model = Asset
         fields = (
-                'date_acquired',
+                'acquisition_date',
                 'asset_status',
                 'asset_type',
                 'asset_code',
                 'description',
-                'acquired_value',
+                'acquisition_value',
                 'make',
                 'model',
-                'serial',
+                'serial_number',
                 'sku',
                 'photo',
                 'manual',
@@ -55,3 +55,7 @@ class AssetCheckoutFancyForm(ModelForm):
 class AssetImportForm(ModelForm):
     class Meta:
         model = AssetImport
+
+class LocationForm(ModelForm):
+    class Meta:
+        model = Location
