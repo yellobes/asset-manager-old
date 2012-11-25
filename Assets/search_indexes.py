@@ -1,7 +1,7 @@
 import datetime
 from haystack.indexes import *
 from haystack import site
-from Assets.models import Asset
+from Assets.models import Asset, AssetMake, AssetModel
 
 from django.contrib.auth.models import User
 
@@ -13,10 +13,8 @@ class AssetIndex(SearchIndex):
     asset_code = CharField(model_attr='asset_code',)
     description = CharField(model_attr='description',)
     acquisition_value = CharField(model_attr='acquisition_value')
-    make = CharField(model_attr='make',)
-    model = CharField(model_attr='model',)
-    serial_number = CharField(model_attr='serial_number',)
-    sku = CharField(model_attr='sku',)
+    #make = CharField(model_attr='make',)
+    #model = CharField(model_attr='model',)
     def get_model(self):
         return Asset
 

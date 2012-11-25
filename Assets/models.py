@@ -29,16 +29,12 @@ class Asset(models.Model) :
     asset_code = models.CharField(max_length=100, unique=True, blank=True, )
     charge_type = models.CharField(choices=CHARGE_TYPE_CHOICES, default='expense', max_length=100, blank=True, )
 
-    make = models.CharField(max_length=100, blank=True, )
-    model = models.CharField(max_length=100, blank=True, )
-    sku = models.CharField(max_length=200, blank=True, )
-    photo = models.ImageField(upload_to='img/', blank=True, )
-    manual = models.FileField(upload_to='manual/', blank=True, )
-    manual.help_text="Please upload an archive with ALL manual documents"
-    drivers = models.FileField(upload_to='drivers/', blank=True, )
-    drivers.help_text="Upload an archive with associated drivers"
+    make = models.ForeignKey('AssetMake')
+    model = models.ForeignKey('AssetModel')
+
     invoices = models.FileField(upload_to='invoices/', blank=True, )
     invoices.help_text="Upload an archive of invoices or other paperwork"
+
     @models.permalink
     def get_absolute_url(self):
         print "trying to get the absolute url of asset.:" + self.asset_code
@@ -51,11 +47,31 @@ class Asset(models.Model) :
     def __unicode__(self):
         return self.asset_code
 
+class AssetMake(models.Model):
+    make = models.CharField(max_length=100, blank=True, unique=True)
+
+    def __unicode__(self):
+        return unicode(self.make)
+
+class AssetModel(models.Model):
+    make = models.ForeignKey("AssetMake")
+
+    title = models.CharField(max_length=200, unique=True)
+
+    sku = models.CharField(max_length=200,)
+    photo = models.ImageField(upload_to='img/',)
+    manual = models.FileField(upload_to='manual/',)
+    manual.help_text="Please upload an archive with ALL manual documents"
+    drivers = models.FileField(upload_to='drivers/',)
+    drivers.help_text="Upload an archive with associated drivers"
+
+    def __unicode__(self):
+        return unicode(self.title)
 
 # Checkout object. Enables checkouts and logging
 class AssetCheckout(models.Model):
-    user_id = models.ForeignKey(User, related_name="")
-    asset_id = models.ForeignKey("Asset", related_name="")
+    user = models.ForeignKey(User, related_name="")
+    asset = models.ForeignKey("Asset", related_name="")
     out_date = models.DateTimeField()
     in_date = models.DateTimeField(blank=True, null=True)
     description = models.TextField(max_length=1000)

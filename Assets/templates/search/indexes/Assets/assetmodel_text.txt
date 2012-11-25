@@ -1,0 +1,5 @@
+{{ object.make }}
+{{ object._type }}
+{{ object.sku }}
+{{ object.manual }}
+{{ object.drivers }}

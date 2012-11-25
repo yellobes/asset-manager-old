@@ -1,11 +1,21 @@
-{% extends "Assets/base.html" %}
-{% block title %}{{ section.title }}{% endblock %}
-</script>
-{% block content %}
-<script type="text/javascript">
-    $(document).ready( function(){
-            $('#content').load('{% url userSearch %}?');
-        }); 
-</script>
-<div id="content"></div>
-{% endblock %}
+{% extends 'Assets/collection.html' %}
+
+{# Collection is the set of objects passed from views. #}
+{% url Assets.views.collection 'asset' as collection_url %}
+
+    {% block object_table %}
+
+    <table>
+        <tbody>
+    {% for thing in collection %}
+    {% url assetElement 'user' thing.pk as element_url %}
+        <tr>
+            <td><a href='{{ element_url }}/assets'>View Assets</a></td>
+            <td>{{ thing.username }}</td>
+            <td>{{ thing.email }}</td>
+        </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+
+    {% endblock %}

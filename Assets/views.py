@@ -2,6 +2,7 @@
 
 import django
 
+
 from django.shortcuts      import get_object_or_404, render_to_response, redirect
 from django.http           import HttpRequest, HttpResponse, HttpResponseForbidden
 from django.template       import RequestContext
@@ -11,6 +12,7 @@ from Assets.forms          import *
 from django.http           import Http404
 from django.forms          import ModelForm
 from haystack.forms        import ModelSearchForm
+from django.core           import serializers
 
 from django.core.exceptions import *
 
@@ -33,34 +35,6 @@ def search(request):
 
         for x in request.GET.getlist('!'):
             sqs = sqs.exclude(content=x)
-
-        if request.GET.get('q'):
-            suggestion = None
-            form = ModelSearchForm(
-                    request.GET,
-                    searchqueryset=sqs,
-                    load_all=True
-                    )
-            if form.is_valid():
-                query = form.cleaned_data['q']
-                results = form.search()
-
-        else: results = sqs
-
-        for result in results:
-            result.checkout_info = checkout_info(result)
-
-
-        return render_to_response('Assets/search/results.html', {'page':results},
-                context_instance = RequestContext(request))
-    else :
-        return render_to_response('Assets/search/index.html',
-                context_instance = RequestContext(request))
-
-
-def user_search(request):
-    if ( request.method == 'GET' ) | ( request.method == 'POST' ):
-        sqs = SearchQuerySet().models(User)
 
         if request.GET.get('q'):
             suggestion = None
@@ -115,10 +89,30 @@ class extra_datas:
 
 def render_object(request, type, id):
     extra_data = extra_datas()
+
+    if type == 'assets':
+        extra_data.type = type
+    else:
+        try:
+            extra_data.type = type.split('asset')[1]
+            type = type.split('asset')[1]
+        except IndexError:
+            extra_data.type = type
+
     if type == 'asset':
         Type = Asset
         TypeForm = AssetForm
         template = 'asset.html'
+    elif type == 'make':
+        Type = AssetMake
+        TypeForm = AssetMakeForm
+        template = 'type.html'
+        extra_data.types = Type.objects.all()[:10]
+    elif type == 'model':
+        Type = AssetModel
+        TypeForm = AssetModelForm
+        template = 'type.html'
+        extra_data.types = Type.objects.all()[:10]
     elif type == 'assets':
         Type = AssetImport
         TypeForm = AssetImportForm
@@ -131,7 +125,7 @@ def render_object(request, type, id):
         try:
             asset_id = int(asset_id)
             asset = Asset.objects.get(pk=asset_id)
-            asset_name = ' "%s" ( %s %s ) ' % ( asset.asset_code, asset.make, asset.model, )
+            asset_name = ' "%s"  ' % ( asset.asset_code, ) # asset.make, asset.model, )
         except ValueError:
             asset_name = ''
         extra_data.asset_id = asset_id
@@ -140,7 +134,7 @@ def render_object(request, type, id):
         Type = ExternalID
         TypeForm = ExternalIDForm
         template = 'externalid.html'
-    elif type == 'assettype':
+    elif type == 'type':
         Type = AssetType
         TypeForm = AssetTypeForm
         template = 'type.html'
@@ -151,7 +145,12 @@ def render_object(request, type, id):
         template = 'type.html'
         extra_data.types = Type.objects.all()[:10]
     else:
+        print 'type not found :: ', type
         raise Http404
+
+
+
+    print extra_data.type
 
     try :
         element = Type.objects.get(pk=id)
@@ -171,6 +170,16 @@ def create_object(request, type, id):
         Type = Asset
         TypeForm = AssetForm
         template = 'Assets/asset.html'
+    elif type == 'assetmake':
+        Type = AssetMake
+        TypeForm = AssetMakeForm
+        template  = 'Assets/type.html'
+        extra_data.types = Type.objects.all()[:10]
+    elif type == 'assetmodel':
+        Type = AssetModel
+        TypeForm = AssetModelForm
+        template  = 'Assets/type.html'
+        extra_data.types = Type.objects.all()[:10]
     elif type == 'checkout':
         Type = AssetCheckout
         TypeForm = AssetCheckoutForm
@@ -179,7 +188,7 @@ def create_object(request, type, id):
         try:
             asset_id = int(asset_id)
             asset = Asset.objects.get(pk=asset_id)
-            asset_name = ' "%s" ( %s %s ) ' % ( asset.asset_code, asset.make, asset.model, )
+            asset_name = ' "%s"  ' % ( asset.asset_code, ) #( %s %s )asset.make, asset.model, )
         except ValueError:
             asset_name = ''
         extra_data.asset_name = asset_name
@@ -215,6 +224,7 @@ def create_object(request, type, id):
 
     object_form = TypeForm( request.POST, request.FILES, instance=Type)
 
+    extra_data.type = type.split('asset')[1]
 
     if object_form.is_valid():
         object_form.save()
@@ -252,6 +262,8 @@ def kill_object(request, type, id):
 
 
 def render_type(request, type):
+    page = request.GET.get('p')
+    items_per_page = 20
 
     if type == 'checkout':
         type_object = AssetCheckout
@@ -267,9 +279,7 @@ def render_type(request, type):
         return HttpResponseForbidden()
 
     collection = type_object.objects.all()
-    collection = Paginator(collection, 30)
-
-    page = request.GET.get('page')
+    collection = Paginator(collection, items_per_page)
 
     try :
         collection = collection.page(page)
@@ -286,7 +296,6 @@ def render_type(request, type):
 
 # ================ GENERIC VIEWS ======================
 
-
 #from django.views.generic import TemplateView
 
 # ================ Help Views =========================
@@ -300,4 +309,15 @@ def help(request, page):
             context_instance = RequestContext(request))
     else:
         raise Http404
+
+# ================ JSON Views =========================
+
+
+def get_models(request, id):
+    try:
+        models = AssetModel.objects.get(make_id=id)
+        return HttpResponse(serializers.serialize('json', [models]))
+    except ObjectDoesNotExist:
+        return HttpResponse('')
+    return HttpResponse('')
 

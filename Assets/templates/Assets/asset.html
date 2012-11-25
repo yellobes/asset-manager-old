@@ -17,7 +17,7 @@
   <form id="asset-mod" enctype="multipart/form-data" method="POST">
     {% csrf_token %}
     {% for field in object_form %}
-    <span {% if field.field.required %}class="required {% endif %}{% if field.label %}apply-watermark">{% endif %}
+    <span class="{% if field.field.required %}required {% endif %}{% if field.label %}apply-watermark{% endif %}" style="position:relative;">
       {{ field.label_tag }}: {{ field }} {{ field.errors }}
       <span>{{ field.help_text }}</span>
     </span>
@@ -27,7 +27,51 @@
     id="{{ 1 }}" type="submit" value="Save" />
   </form>
   {% block extension %}{% endblock %}
-{% endblock %}
 
+<script type="text/javascript">
+
+
+
+// Filter the makes by model
+$('[name=make]').change(function(){
+  make = $(this).val();
+  loading_overlay = '<div class="loading-overlay"></div>';
+
+  $('[name=model]').closest('span').prepend(loading_overlay);
+  $.getJSON('/assets/get_models/'+make, function(data) {
+    var items = [];
+    items = '<option value="" selected="selected">---------</option>';
+
+    if (data != null){
+      $.each(data, function() {
+        val = $(this)[0].fields.title
+        key = $(this)[0].pk
+        items += '<option value="' + key + '">' + val + '</option>';
+      });
+    }
+    $('[name=model]').closest('span').find('.loading-overlay').remove();
+    $('[name=model]').html(items);
+    
+  });
+
+});
+</script>
+
+<style type="text/css">
+  .loading-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    margin-top: -10px;
+    margin-left: -10px;
+    background-image: url('{{ STATIC_URL }}img/loading.gif');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: rgba(90,90,90,.2);
+  }
+</style>
+
+{% endblock %}
 
 

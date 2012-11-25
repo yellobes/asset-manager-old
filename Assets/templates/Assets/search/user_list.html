@@ -1,0 +1,32 @@
+<!-- -1GTI -->
+{{ page }}
+<table class="table-border">
+{% for result in users %}
+    <tr class="fade">
+        <td>{{ result.username }}</td>
+        <td>{{ result.first_name }}</td>
+        <td>{{ result.last_name }}</td>
+        <td>{{ result.email }}</td>
+    </td>
+  </tr>
+{% empty %}
+    <p>No results found. <br />&nbsp;<b><em><a href="/help/searching">need help?</a></em></b></p>
+    
+{% endfor %}
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>

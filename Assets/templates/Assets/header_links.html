@@ -1,16 +1,11 @@
 <!-- RD9OJ -->
 <div id="menu">
   <div class="menu-header">
-    <p><a href="#">Admin</a></p>
+    <p><a href="#">Import / Export</a></p>
     <ul class="menu">
-      <a href="/admin">
+      <a href="{% url objectCollection 'assets' %}">
         <li class="menu-item">
-        <p><a href="#">Admin Console</a></p>
-        </li>
-      </a>
-      <a href="/admin/logout">
-        <li class="menu-item">
-          <p><a href="#">Logout</a></p>
+          <p>Import Assets</p>
         </li>
       </a>
     </ul>
@@ -20,27 +15,44 @@
     <ul class="menu">
       <a href="{% url newObject 'asset' %}">
         <li class="menu-item">
-          <p><a href="#">Asset</a></p>
+          <p>Asset</p>
         </li>
       </a>
-      <a href="{% url newObject 'assettype' %}">
+      <hr style="margin:0;padding:2px;background-color:rgba(200,100,100,.8);">
+      <a href="{% url newObject 'type' %}">
         <li class="menu-item">
-          <p><a href="#">Asset Type</a></p>
+          <p>Asset Type</p>
         </li>
       </a>
+      <a href="{% url newObject 'make' %}">
+        <li class="menu-item">
+          <p>Asset Make</p>
+        </li>
+      </a>
+      <a href="{% url newObject 'model' %}">
+        <li class="menu-item">
+          <p>Asset Model</p>
+        </li>
+      </a>
+      <hr style="margin:0;padding:2px;background-color:rgba(200,100,100,.8);">
       <a href="{% url newObject 'location' %}">
         <li class="menu-item">
-          <p><a href="#">Location</a></p>
+          <p>Location</p>
         </li>
       </a>
     </ul>
   </div>
   <div class="menu-header">
-    <p><a href="#">Import / Export</a></p>
+    <p><a href="#">Admin</a></p>
     <ul class="menu">
-      <a href="{% url assetCollection 'assets' %}">
+      <a href="/admin">
         <li class="menu-item">
-          <p><a href="#">Import Assets</a></p>
+        <p>Admin Console</p>
+        </li>
+      </a>
+      <a href="/admin/logout">
+        <li class="menu-item">
+          <p>Logout</p>
         </li>
       </a>
     </ul>
@@ -48,20 +60,52 @@
 </div>
 
 <script type="text/javascript">
+$(document).ready(function() {
+  console.log('header_links docready')
+  var $menu = $('#menu');
+  var $menu_header = $('.menu-header');
+  var $page_header = $('#page-header');
+  var $search_wrapper = $('#search-wrapper');
+  var menu_margin = $page_header.width() - $menu.width() - $search_wrapper.width() - 50;
+  var hide_length = 100
 
-  $(document).ready(function() {
-
-    $('.menu-header').mouseenter(function() {
-      $(this).children('ul').show(100)
-    }).mouseleave(function() {
-      $(this).children('ul').hide(100);
-    });
-
-    $('.menu-header').each(function() {
-      $(this).width( $(this).children('ul').width() );
-      $(this).children('ul').hide();
-    });
+  $('.menu-header').mouseenter(function() {
+    $(this).children('ul').show(hide_length)
+  }).mouseleave(function() {
+    $(this).children('ul').hide(hide_length);
   });
+
+  window.rund_before = true;
+  $('.menu-header').each(function() {
+    $(this).width( $(this).children('ul').width() );
+    $(this).children('ul').hide();
+  });
+
+  if( 1 < menu_margin ){
+    $('#menu').height($('#page-header').height() - $('#menu').height() + 'px');
+    $menu.css({'margin-left' :  menu_margin + 'px' });
+  } else {
+    $menu.css({'margin-left' : '5px' });
+    $('#menu').height('auto');
+    $('#menu').height($('#menu').height() + 1 + 'px');
+  }
+});
+
+$(window).resize(function(){
+  var $menu = $('#menu');
+  var $page_header = $('#page-header');
+  var $search_wrapper = $('#search-wrapper');
+  var menu_margin = $page_header.width() - $menu.width() - $search_wrapper.width() - 50;
+
+  if( 1 < menu_margin ){
+    $('#menu').height($('#page-header').height() - $('#menu').height() + 5 + 'px');
+    $menu.css({'margin-left' :  menu_margin + 'px' });
+  } else {
+    $menu.css({'margin-left' : '5px' });
+    $('#menu').height('auto');
+    $('#menu').height($('#menu').height() + 1 + 'px');
+  }
+});
 
 </script>
 <!-- /RD9OJ -->

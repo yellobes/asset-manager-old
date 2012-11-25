@@ -6,20 +6,20 @@
   <br>
   <a href="{% url assetIndex %}">&lsaquo; Asset index</a>
   <span id="newtype"> &middot; 
-    <a href="{% url newObject 'assettype' %}">New Asset Type &rsaquo;</a>
+    <a href="{% url newObject extra_data.type %}">New {{extra_data.type|title}} &rsaquo;</a>
   </span>
   <hr>
-  <h1 class="form-title">Asset Type Form</h1>
+  <h1 class="form-title">Asset {{extra_data.type|title}} Form</h1>
   <div id="pre-existing-types">
     <hr>
     <span>
       <p>
-        These types already exist:
+        These {{extra_data.type}}s already exist:
       </p>
     </span>
     <ul>
       {% for type in extra_data.types %}
-      <li><a href="{% url assetElement 'assettype' type.id %}">{{ type }}</a></li>
+      <li><a href="{% url assetElement extra_data.type type.id %}">{{ type }}</a></li>
       {% endfor %}
     </ul>
     <hr>

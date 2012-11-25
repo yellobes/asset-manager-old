@@ -18,8 +18,6 @@ body {
 }
 
 #page-header {
-    height: 2.4em;
-    min-width: 200px;
     position: fixed;
     background-color: rgba(252,252,252,2.5);
     box-shadow: 6px 2px 12px #aaa;
@@ -47,6 +45,7 @@ body {
 #body {
     display: inline-block;
     text-align: left;
+    margin: 1em 0;
 }
 
 #footer {
@@ -64,11 +63,7 @@ body {
 
 .sticky-tab {
     margin: .40em 4px auto 0;
-    float: left;
-
-}
-
-.sticky-tab {
+    display: inline-block;
     bottom: 0px;
     font-size: 1em;
     padding: 0 4px 0 0;
@@ -110,7 +105,11 @@ body {
 
 
 
-
+#header {
+    padding-top: .5em;
+    background-color: rgba(255, 255, 255, .45);
+    box-shadow: 0 0 20px 5px rgba(255, 255, 255, .45);
+}
 
 
 
@@ -122,14 +121,11 @@ body {
 
 #menu {
     display: inline-block;
-    position: absolute;
-    margin: .90em 4px auto 0;
     right: 0px;
 }
 
 .menu-header {
-    float:right;
-    bottom: 0px;
+    display: inline-block;
     font-size: 1em;
     padding: 0 4px 0 0;
 }
@@ -140,12 +136,17 @@ body {
 }
 
 .menu-header ul {
+    float: left;
     -webkit-border-radius: 0px 0px 8px 8px;
     border-radius: 0px 0px 8px 8px;  
 }
 
 .menu-header p {
     padding: 0 3px 0 3px;
+}
+
+.menu-header > p {
+    text-align: center;
 }
 
 .menu-header p:first-child  {
@@ -161,7 +162,7 @@ body {
     min-width: 100%;
 }
 
-#menu div {
+#menu div  div {
     max-height: 1px;
 }
 
@@ -219,19 +220,18 @@ body {
 
 .clear {
     width:100%;
-    text-align:center;
     clear:both;
 }
 
 .table-border {
-    min-width: 480px;
-    max-width: 700px;
+    max-width: 900px;
     margin:0 auto;
     border-collapse:collapse;
     border-spacing: 0px;
 }
 
-#asset-mod {
+#asset-mod,
+#login {
     background-color: rgba(240,240,240,.8);
     box-shadow: 0 0 20px 5px rgba(200,200,200,.6);
     display: inline-block;
@@ -243,8 +243,8 @@ body {
 }
 
 #asset-mod > * > p, div, label {
-    background-color: rgba(255,255,255,.25);
-    box-shadow: 0 0 20px 5px rgba(255,255,255,.25);
+    background-color: rgba(255,255,255,.35);
+    box-shadow: 0 0 20px 5px rgba(255,255,255,.35);
 }
 
 
@@ -283,7 +283,7 @@ a {
 }
 
 a:visited {
-    color:#000;
+    color: #5050A0;
 }
 
 .top-li:hover {
@@ -388,6 +388,10 @@ h1, h2, h3, h4 {
     display: none;
 }
 
+#search-wrapper {
+    display: inline-block;
+}
+
 #pre-existing-types > ul {
     display: inline-block;
     max-height: 10em;
@@ -403,6 +407,7 @@ h1, h2, h3, h4 {
 }
 
 #add-search-filter {
+    margin-left: 10px;
     margin-top: .5em;
     text-shadow: 0 0 10px #0F0;
 }

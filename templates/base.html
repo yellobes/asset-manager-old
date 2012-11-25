@@ -8,30 +8,33 @@
     <title>{% block title %}User test{% endblock %}</title>
 </head>
 
-<body>
-    <div id="header">
-        {% block header %}
-	<a href="{% url index %}">{% trans "Home" %}</a> | 
+<body style="background-color: #282; background-image: url('/s/img/flexion-background.png'), url('/s/img/t1-background.png');">
+    <div id="wrapper">
+        <div id="header">
+            {% block header %}
+    	<a href="{% url index %}">{% trans "Home" %}</a> | 
 
-	{% if user.is_authenticated %}
-	{% trans "Logged in" %}: {{ user.username }} 
-	(<a href="{% url auth_logout %}">{% trans "Log out" %}</a> | 
-	<a href="{% url auth_password_change %}">{% trans "Change password" %}</a>)
-	{% else %}
-	<a href="{% url auth_login %}">{% trans "Log in" %}</a>
-	{% endif %}
-	<hr />
-        {% endblock %}
-    </div>
+    	{% if user.is_authenticated %}
+    	{% trans "Logged in" %}: {{ user.username }} 
+    	(<a href="{% url auth_logout %}">{% trans "Log out" %}</a> | 
+    	<a href="{% url auth_password_change %}">{% trans "Change password" %}</a>)
+    	{% else %}
+    	<a href="{% url auth_login %}">{% trans "Log in" %}</a>
+    	{% endif %}
+    	<hr />
+            {% endblock %}
+        </div>
 
-    <div id="content">
-        {% block content %}{% endblock %}
-    </div>
+        <div id="body">
+            {% block content %}{% endblock %}
+        </div>
 
-    <div id="footer">
-        {% block footer %}
-        <hr />
-        {% endblock %}
+        <div id="footer">
+            <hr>
+            {% block footer %}
+            {% endblock %}
+            <hr>
+        </div>
     </div>
 </body>
 

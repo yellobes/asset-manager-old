@@ -23,15 +23,15 @@ class AssetSearch(SearchForm):
                 'make',
                 'model',
                 'serial_number',
-                'sku',
-                'photo',
-                'manual',
-                'manual.help_text',
-                'drivers',
-                'drivers.help_text',
-                'invoices',
-                'invoices.help_text',
                 )
+
+class AssetMakeForm(ModelForm):
+    class Meta:
+        model = AssetMake
+
+class AssetModelForm(ModelForm):
+    class Meta:
+        model = AssetModel
 
 class AssetCheckoutForm(ModelForm):
     class Meta:
@@ -48,7 +48,7 @@ class AssetCheckoutFancyForm(ModelForm):
         model = AssetCheckout
         fields = (
                 'out_date',
-                'user_id',
+                'user',
                 'description',
                 )
 
@@ -59,3 +59,17 @@ class AssetImportForm(ModelForm):
 class LocationForm(ModelForm):
     class Meta:
         model = Location
+
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'last_name',
+            'first_name',
+            'email',
+            )
+
+class UserFormSuper(ModelForm):
+    class Meta:
+        model = User

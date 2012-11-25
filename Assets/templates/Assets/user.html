@@ -1,0 +1,33 @@
+<!-- 3W0NF -->
+
+{% extends 'Assets/element.html' %}
+
+{% block header %}
+  <br>
+  <a href="{% url assetIndex %}">&lsaquo; Asset index</a>
+  <span id="newtype"> &middot; 
+    <a href="{% url newObject 'asset' %}">New Asset &rsaquo;</a>
+  </span>
+  <hr>
+  <h1 class="form-title">Asset Form</h1>
+  <hr>
+{% endblock %}
+
+{% block body %}
+  <form id="asset-mod" enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    {% for field in object_form %}
+    <span {% if field.field.required %}class="required {% endif %}{% if field.label %}apply-watermark">{% endif %}
+      {{ field.label_tag }}: {{ field }} {{ field.errors }}
+      <span>{{ field.help_text }}</span>
+    </span>
+    {% endfor %}
+    <input name='PUT' type='hidden' />
+    <input class="submitButton"
+    id="{{ 1 }}" type="submit" value="Save" />
+  </form>
+  {% block extension %}{% endblock %}
+{% endblock %}
+
+
+

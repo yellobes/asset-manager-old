@@ -1,93 +1,98 @@
-<input id="search" placeholder="&nbsp;search" class="float-left search-input" type="text" autofocus="on">
+<div id="search-wrapper">
+  <input id="search" placeholder="&nbsp;search" class="search-input" type="text" autofocus="on">
 
-<input id="exclude" placeholder="&nbsp;exclude" class="float-left filter-input" type="text">
+  <!-- input id="exclude" placeholder="&nbsp;exclude" class="filter-input" type="text" -->
 
-<!--img src="{{ STATIC_URL }}img/loading.gif" id="search-running" /-->
+  <!-- img src="{{ STATIC_URL }}img/loading.gif" id="search-running" /-->
 
 
 
-<!-- 229N3 -->
-<div class="sticky-tab">
-  <div class="sticky-tab-wrapper">
-    <p><a style="width:100%; display:block;" class="sticky-tab-header" href="#" style="width: 200px">Filters</a></p>
-    <ul class="menu" id="search-filters">
-    {% for x in search_filters %}
-    {% endfor %}
-    </ul>
+  <!-- 229N3 -->
+  <!-- div class="sticky-tab">
+    <div class="sticky-tab-wrapper">
+      <p><a style="width:100%; display:block;" class="sticky-tab-header" href="#" style="width: 200px">Filters</a></p>
+      <ul class="menu" id="search-filters">
+      {% for x in search_filters %}
+      {% endfor %}
+      </ul>
+    </div>
   </div>
-</div>
 
-<a href="#" class="float-left" id="add-search-filter">+</a>
+  <a href="#" class="float-left" id="add-search-filter">+</a -->
+</div>
 
 <script type="text/javascript">
 
-  var filter_element = '<li><input class="search-filter" type="text" placeholder="&nbsp;filter" style="width:95%;"><a href="#" class="remove-filter">-</a></li>'
+var filter_element = '<li><input class="search-filter" type="text" placeholder="&nbsp;filter" style="width:95%;"><a href="#" class="remove-filter">-</a></li>'
 
-  $(document).ready(function() {
+$(document).ready(function() {
+  $('#search-wrapper').css({'width': $('#search-wrapper').width()});
+  var $search_filters = $('#search-filters');
 
-    if ( $('#search-filters').children('li').length < 1 ) {
-      $('#search-filters').hide();
-      $('#add-search-filter').hide();
+  if ( $search_filters.children('li').length < 1 ) {
+    $search_filters.hide();
+    $('#add-search-filter').hide();
+  }
+
+  $('.sticky-tab-header').click(function() {
+    if ( $search_filters.children('li').length > 0 ) {
+      y = $('.search-filter');
+      y.each(function() {
+        if( $(this).val() == '' ) {
+          $(this).parent('li').remove();
+        }
+      });
     }
 
-    $('.sticky-tab-header').click(function() {
-      if ( $('#search-filters').children('li').length > 0 ) {
-        y = $('.search-filter');
-        y.each(function() {
-          if( $(this).val() == '' ) {
-            $(this).parent('li').remove();
-          }
-        });
-      }
+    if ( $('.search-filter').length == 0 ) {
+      $search_filters.append(filter_element);
+      $search_filters.toggle(300);
+      $('#add-search-filter').toggle(400);
+    }
+  });
 
-      if ( $('.search-filter').length == 0 ) {
-        $('#search-filters').append(filter_element);
-        $('#search-filters').toggle(300);
-        $('#add-search-filter').toggle(400);
-      }
-    });
-
-    $('#add-search-filter').click(function(){
-      $('#search-filters').show(200, function() {
-        $('#search-filters').append(filter_element);
-        $('#search-filters').children('li').last().toggle();
-        $('#search-filters').children('li').last().toggle(400);
+  $('#add-search-filter').click(function(){
+    $search_filters.show(200, function() {
+      $search_filters.append(filter_element);
+      $search_filters.children('li').last().toggle();
+      $search_filters.children('li').last().toggle(400);
+      $search_filters.children('li').last().keyupQueue(function(){
+        search();
       });
-    });
-
-    $('.remove-filter').live('click', function(){
-      x = $(this).parent();
-      x.toggle(200, function(){
-        x.remove();
-        if ( $('#search-filters').children('li').length < 1 ) {
-          $('#search-filters').hide(1000);
-          $('#add-search-filter').toggle(400);
-        }
-
-      });
-    });
-
-    // $("#search-running").bind("ajaxSend", function(){
-    //     $(this).stop(true,true).show(100);
-    // }).bind("ajaxComplete", function(){
-    //     $(this).stop(true,true).hide(100);
-    // });
-
-    $('#search').keyupQueue(function(){
-      filters = ''
-      exclude = ''
-      $('.search-filter').each(function(){ filters += ( $(this).val() + ',' ) });
-      exclude = $('#exclude').val();
-      $.get('/assets/search',
-        { 'q': $('#search').val(),
-          '!': exclude,
-          '|': filters },
-        function(responseText){
-          $("#content").html(responseText);
-        }
-      );
     });
   });
+
+  $('.remove-filter').live('click', function(){
+    x = $(this).parent();
+    x.toggle(200, function(){
+      x.remove();
+      if ( $search_filters.children('li').length < 1 ) {
+        $search_filters.hide(1000);
+        $('#add-search-filter').toggle(400);
+      }
+
+    });
+  });
+
+  $('#search').keyupQueue(function(){
+    type = $('#exclude').val();
+    search(type);
+  });
+
+  function search(){
+    filters = ''
+    exclude = ''
+    $('.search-filter').each(function(){ filters += ( $(this).val() + ',' ) });
+    $.get('/assets/search',
+      { 'q': $('#search').val(),
+        '|': filters },
+      function(responseText){
+        $("#content").html(responseText);
+      }
+    );
+  }
+  search();
+});
 
 </script>
 
