@@ -1,0 +1,21 @@
+{% extends 'Assets/element.html' %}
+
+{% block header %}
+  <br>
+  <a href="{% url assetIndex %}">&lsaquo; Asset index</a>
+  <br>
+  <span>
+    <h1>{{user}}'s Checked-out Assets</h1>
+  </span>
+  <hr>
+{% endblock %}
+
+{% block body %}
+  {% for checkout in checkouts %}
+  <div>
+    <a href="/assets/asset/{{checkout}}">{{checkout.asset}} · {{checkout.out_date}} · {{checkout.description}}</a>
+  </div>
+  {% endfor %}
+
+  {% block extension %}{% endblock %}
+{% endblock %}

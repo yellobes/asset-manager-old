@@ -71,10 +71,15 @@ def collection(request, type):
         else :
             return create_object(request, type, 0)
 
-
-def element(request, type, id) :
+def view(request, type, id):
     if request.method == 'GET':
-        return render_object(request, type, id)
+        view_object(request, type, id)
+    else:
+        return Http404
+
+def edit(request, type, id) :
+    if request.method == 'GET':
+        return edit_object(request, type, id)
     elif request.method == 'POST' :
         if 'PUT' in request.POST:
             return create_object(request, type, id)
@@ -87,15 +92,29 @@ def element(request, type, id) :
 class extra_datas:
     pass
 
-def render_object(request, type, id):
-    extra_data = extra_datas()
+def view_object(request, type, id):
+    if type == 'asset':
+        Type = Asset
+        template = 'asset.html'
+        return render_to_response(
+            'Assets/render/' + template,
+            {'object':Type}
+        )
+    else:
+        return HttpResponse
 
+def edit_object(request, type, id):
+    extra_data = extra_datas()
+    type = type.replace(' ', '')
     if type == 'assets':
         extra_data.type = type
     else:
         try:
             extra_data.type = type.split('asset')[1]
-            type = type.split('asset')[1]
+            if extra_data.type == '':
+                raise IndexError
+            else:
+                type = type.split('asset')[1]
         except IndexError:
             extra_data.type = type
 
@@ -157,7 +176,7 @@ def render_object(request, type, id):
     except Type.DoesNotExist :
         element = Type()
     object_form = TypeForm(instance=element)
-    return render_to_response('Assets/'+template,
+    return render_to_response('Assets/edit/'+template,
             {
                 'object_form' : object_form,
                 'extra_data' : extra_data,
@@ -270,8 +289,8 @@ def render_type(request, type):
     elif type == 'asset':
         type_object = Asset
     elif type == 'assets': # Nasty hack to allow csv import
-        return render_object(request, type, 0)
-    elif type == 'user':
+        return edit_object(request, type, 0)
+    elif type == 'people':
         type_object = User
 
     else :
@@ -292,6 +311,21 @@ def render_type(request, type):
             { 'collection':collection },
         context_instance = RequestContext(request))
 
+
+# TODO
+def relationships(request, type, id, rel_type):
+    user = User.objects.get(pk=id)
+    checkouts = AssetCheckout.objects.filter(user=user) # Get by user
+    checkouts = checkouts.filter(in_date=None) # Get only the checkouts that are still active
+    for checkout in checkouts:
+        print checkout
+    return render_to_response(
+        'Assets/person.html',
+        {
+            'checkouts':checkouts,
+            'user':user.username,
+        },
+    )
 
 
 # ================ GENERIC VIEWS ======================

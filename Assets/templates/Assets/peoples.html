@@ -8,7 +8,7 @@
     <table>
         <tbody>
     {% for thing in collection %}
-    {% url assetElement 'user' thing.pk as element_url %}
+    {% url assetElement 'people' thing.pk as element_url %}
         <tr>
             <td><a href='{{ element_url }}/assets'>View Assets</a></td>
             <td>{{ thing.username }}</td>

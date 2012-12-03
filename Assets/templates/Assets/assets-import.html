@@ -1,5 +1,3 @@
-<!-- 3W0NF -->
-
 {% extends 'Assets/element.html' %}
 
 {% block header %}
@@ -14,6 +12,28 @@
 {% endblock %}
 
 {% block body %}
+  <script type="text/javascript">
+    $(function(){
+      file_field = '[type=file]';
+      submit = '[type=submit]';
+
+      if ( $(file_field).val() != null){
+        $(submit).attr('disabled','disabled');
+      } // Hide the submit button if there is no value in the file upload field
+
+      if ( $(file_field).length == 1 ){
+        $(file_field).change(function(){
+          console.log('file field changed.')
+          if ( $(file_field).val() == null){
+            $(submit).attr('disabled','disabled');
+          } else {
+            $(submit).removeAttr('disabled');
+          }
+        })
+      } // Lets just check that we are only working with one field.
+
+    });
+  </script>
   <form id="asset-mod" enctype="multipart/form-data" method="POST">
     {% csrf_token %}
     {% for field in object_form %}

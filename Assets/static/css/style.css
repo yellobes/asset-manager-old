@@ -7,7 +7,12 @@
  *
  ***    Peter Novotnak `.- 2012    */
 
+html {
+    height: 100%;
+}
+
 body {
+    min-height: 100%;
     min-width: 390px;
     background-color: #DDD;
     width: 100%;
@@ -19,7 +24,7 @@ body {
 
 #page-header {
     position: fixed;
-    background-color: rgba(252,252,252,2.5);
+    background-color: rgba(255, 255, 255, .95);
     box-shadow: 6px 2px 12px #aaa;
     filter: alpha(opacity = 50);
 
@@ -40,6 +45,8 @@ body {
 
 #wrapper {
     text-align: center;
+    padding-bottom: 150px;
+    min-height: 100%;
 }
 
 #body {
@@ -48,15 +55,31 @@ body {
     margin: 1em 0;
 }
 
-#footer {
-    clear: both;
+#footer-wrapper {
+    margin: 0 auto;
+    width: 50%;
+    min-width: 200px;
+    text-align:left;
+    padding:15px;
+    background-color:#eee;
 }
 
-#page-footer {
-    position:fixed;
-    background:rgba(255,00,255,.2);
-    filter: alpha(opacity = 50);
-    bottom:0px;
+#footer * {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+#footer-wrapper div {
+    display: inline-block;
+    padding:15px;
+}
+
+#footer {
+    position: relative;
+    background-color: #444 ;
+    margin-top: -150px; /* negative value of footer height */
+    height: 150px;
+    clear:both;
 }
 
 /*``````````````````````````````````````*/
@@ -183,6 +206,7 @@ body {
     width:100%;
     margin:2.8em 0;
     float:left;
+    min-height: 100%;
     background:rgba(230,230,230,.8);
 }
 
@@ -298,7 +322,7 @@ td {
 }
 
 tr:first-child {
-    background-color: rgba(250, 230, 250, .9);
+    background-color: rgba(225, 94, 64, .6);
 }
 
 .fade {
