@@ -10,7 +10,6 @@ class AssetIndex(SearchIndex):
     text = CharField(document=True, use_template=True)
     acquisition_date = CharField(model_attr='acquisition_date',)
     asset_type = CharField(model_attr='asset_type',)
-    asset_code = CharField(model_attr='asset_code',)
     description = CharField(model_attr='description',)
     acquisition_value = CharField(model_attr='acquisition_value')
     #make = CharField(model_attr='make',)

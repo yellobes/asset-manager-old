@@ -12,6 +12,7 @@ html {
 }
 
 body {
+    height: 100%;
     min-height: 100%;
     min-width: 390px;
     background-color: #DDD;
@@ -45,7 +46,6 @@ body {
 
 #wrapper {
     text-align: center;
-    padding-bottom: 150px;
     min-height: 100%;
 }
 
@@ -67,6 +67,7 @@ body {
 #footer * {
     background-color: transparent;
     box-shadow: none;
+
 }
 
 #footer-wrapper div {
@@ -76,10 +77,14 @@ body {
 
 #footer {
     position: relative;
-    background-color: #444 ;
-    margin-top: -150px; /* negative value of footer height */
-    height: 150px;
+    text-shadow: 0 0 20px white;
+    box-shadow: 0 0 30px #222;
+    background-color: rgba(100, 100, 100, .9);
     clear:both;
+    padding-bottom: 30px;
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
 }
 
 /*``````````````````````````````````````*/

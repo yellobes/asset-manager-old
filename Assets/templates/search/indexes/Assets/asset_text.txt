@@ -1,7 +1,6 @@
 {{ object.acquisition_date }}
 {{ object.asset_status }}
 {{ object.asset_type }}
-{{ object.asset_code }}
 {{ object.description }}
 {{ object.acquisition_value }}
 {{ object.charge_type }}

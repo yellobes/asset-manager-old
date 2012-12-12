@@ -1,5 +1,14 @@
 import os
+import django
 
+# http://www.morethanseven.net/2009/02/11/django-settings-tip-setting-relative-paths/
+# calculated paths for django and the site
+# used as starting points for various other paths
+DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
+SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
+
+
+ROOT_URLCONF = 'dj_t.urls'
 LOGIN_REDIRECT_URL = '/assets/'
 REGISTRATION_OPEN = False
 TIME_ZONE = 'America/Chicago'
@@ -8,9 +17,9 @@ SITE_ID = 1
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-MEDIA_ROOT = '/home/pnovotnak/Documents/assman/media/'
+MEDIA_ROOT = os.path.join(SITE_ROOT, 'media/')
 MEDIA_URL = '/m/'
-STATIC_ROOT = '/home/pnovotnak/Documents/assman/static/'
+STATIC_ROOT = os.path.join(SITE_ROOT, 'static/')
 STATIC_URL = '/s/'
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
@@ -35,12 +44,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
-ROOT_URLCONF = 'dj_t.urls'
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/pnovotnak/Documents/assman/templates/',
+    os.path.join(SITE_ROOT, 'templates/'),
 )
 INSTALLED_APPS = (
     'django.contrib.auth',

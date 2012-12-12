@@ -25,8 +25,8 @@ class Asset(models.Model) :
 
     external_id = models.CharField(max_length=200, blank=True, )
     asset_status = models.CharField(choices=STATUS_CHOICES, max_length=100, blank=True, )
-    asset_type = models.ForeignKey("AssetType", blank=True, )
-    asset_code = models.CharField(max_length=100, unique=True, blank=True, )
+    asset_type = models.ForeignKey("AssetType", )
+    #asset_code = models.CharField(max_length=100, unique=True, blank=True, )
     charge_type = models.CharField(choices=CHARGE_TYPE_CHOICES, default='expense', max_length=100, blank=True, )
 
     make = models.ForeignKey('AssetMake')
@@ -45,7 +45,7 @@ class Asset(models.Model) :
         return AssetCheckout(asset=this.id)
 
     def __unicode__(self):
-        return self.asset_code
+        return unicode(self.id)
 
 class AssetMake(models.Model):
     make = models.CharField(max_length=100, blank=True, unique=True)
