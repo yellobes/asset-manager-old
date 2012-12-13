@@ -326,7 +326,7 @@ td {
     padding: 0px 4px;
 }
 
-tr:first-child {
+thead tr {
     background-color: rgba(225, 94, 64, .6);
 }
 

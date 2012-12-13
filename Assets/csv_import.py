@@ -12,62 +12,64 @@ class totals(object):
     fuzzy = 0
     sure = 0
     def percentage_matched(self):
-        return round(
-            float(
-                (
-                    (
-                        float(self.sure) + float(self.fuzzy)
-                        ) 
-                    / float(self.processed)
-                    ) 
-                * 100 
-                )
-            , 2
-            )
+        sure = float(self.sure)
+        fuzzy = float(self.fuzzy)
+        processed = float(self.processed)
+        return round( float( ( ( sure + fuzzy ) / processed ) * float(100) ), 2 )
 total = totals()
 
 
-def get_type_matches(i, y):
-    matched = False
+def get_type_matches(x, y):
+    x = ' '.join(x)
+    matched = None
+    closest = ''
+    levenshtein = 0
     for assettype in AssetType.objects.all():
 
-        if assettype.type_name in i :
-            total.sure += 1
-            #print y, ' ! ', assettype.type_name, ' - ', i
-            matched = True
-            break
+        _type = ' '.join([assettype.type_name, ',', assettype.description])
+        _type = _type.replace('-', ' ').replace(' ','')
+        pluralized_type = _type.split(',')
+        pluralized_type = filter(None, pluralized_type)
+
+        for xx in pluralized_type:
+            xx.replace(' ','')
+            xx = filter(None, xx)
+            if xx in x :
+                total.sure += 1
+                return assettype.type_name
         else:
-            for xx in ' '.join([assettype.type_name, assettype.description]).strip(',').split(' '):
-                print bitapSearch(xx, i, len(xx))
+            for xx in pluralized_type:
+                for yy in x.split(' '):
+                    close = SequenceMatcher(None, xx, yy).ratio()
+                    if close > 1:
+                        if close > levenshtein:
+                            matched = 'maybe'
+                            total.fuzzy += .8
+                            levenshtein = close
+                            matched = assettype.type_name
+    return matched
 
-            for substr in i.split(' '):
-            
-                close = SequenceMatcher(None, assettype.type_name, substr).ratio()
-            
-                if close > .7:
-            
-                    matched = 'maybe'
-            
-                    total.fuzzy += 1
-            
-                    print y, ' ? ', assettype.type_name, ' - ', i
 
-    if matched == False:
-        return False
-    else:
-        return True
+def get_location_matches(location):
+    location = location.replace(' ','')
+    if len(location) == 2:
+        try:
+            print Location.objects.get(short_state=location)
+        except:
+            print None
 
 
 def import_csv(_file, model):
     model_fields = get_model_fields(model) # Fields to diff against
     y = 0 # x <->, y^, and an iterator (i)
     header_links = []
+    output = []
+    location_location = False
 
     for chunk in _file.chunks(): # Split the upload into parts
         for row in iter(chunk.splitlines()): # For each row in chunk
             index = 0
             x = row.split(',') # A list to hold the row's fields
-
             if y == 0: # Header row
                 ai = 0
                 x[x.index('System Number')] = 'external_id'
@@ -79,35 +81,35 @@ def import_csv(_file, model):
                     mx = ['','',0] # mx = max (the likliest match @ field)
                     for e in c: # For e in our list
                         if e[2] > mx[2]: # If e['similarity_ratio'] is greater than the last one
-                            mx = e # We now have all of our closest matches in list 'mx'
+                            mx = e # Set as closest match in list 'mx'
                     header_links.append(mx)
                     ai += 1
-                print header_links
+                output.append([['Matched Type'], header_links])
                 c = []
                 del ai
                 del mx
                 del e
-
             else:
-                obj = model()
-                type_match = False
-                for i in x:
-
-                    if not type_match:
-                        type_match = get_type_matches(i, y)
-
-                    #print y ,'obj.'+header_links[index][1]+' = ', i
+                g= 0
+                for out in output[0][1]:
                     try:
-                        exec("obj."+header_links[index][1].replace('"', "'")+" = '"+i+"'")
-                    except NameError:
+                        location_location = out.index('Location')
+                        break
+                    except ValueError:
                         pass
-                        #print 'obj.', model._meta.get_field( header_links[index][1].replace('_id','') ).rel.to
-                    index += 1
-                #print '>>> ',obj
+                    g+= 1
+                get_location_matches(x[g])
+                obj = model()
+                type_match = get_type_matches(x, y)
+                output.append([[type_match], x])
                 del type_match
             y += 1
         total.processed = y
+        print 'Processed: ', total.processed
+        print 'Exact: ', total.sure
+        print 'Fuzzy match: ', total.fuzzy
         print '% Any match: ', total.percentage_matched()
+        return output
 
 
 

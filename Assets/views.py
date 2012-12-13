@@ -227,8 +227,10 @@ def create_object(request, type, id):
         TypeForm = AssetImportForm
         object_form = TypeForm( request.POST, request.FILES, instance=Type)
         if object_form.is_valid():
-            import_csv(request.FILES['csv'], Asset)
-            return render_to_response('Assets/import-success.html',
+            output = import_csv(request.FILES['csv'], Asset)
+            return render_to_response(
+                'Assets/import-success.html',
+                {'output': output},
                 context_instance = RequestContext(request))
         else:
             return render_to_response('Assets/import-failure.html',

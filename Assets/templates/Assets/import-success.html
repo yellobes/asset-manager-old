@@ -1,1 +1,40 @@
-hi
+{% extends 'Assets/element.html' %}
+
+{% block body %}
+	{% if output %}
+	<table>
+	{% for line in output %}
+		{% if forloop.first %}
+			<thead>
+				<tr>
+					{% for array in line %}
+						{% for cell in array %}
+						<td>
+							{% if not forloop.parentloop.first %}
+								{{ cell.0 }}
+							{% else %}
+								{{ cell }}
+							{% endif %}
+						</td>
+						{% endfor %}
+					{% endfor %}
+				</tr>
+			</thead>
+			<tbody>
+		{% elif forloop.last %}
+			</tbody>
+		{% else %}
+				<tr>
+					{% for array in line %}
+						{% for cell in array %}
+						<td>
+							{{ cell }}
+						</td>
+						{% endfor %}
+					{% endfor %}
+				</tr>
+		{% endif %}
+	{% endfor %}
+	</table>
+	{% endif %}
+{% endblock %}
