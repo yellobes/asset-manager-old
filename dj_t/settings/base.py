@@ -105,3 +105,9 @@ LOGGING = {
     }
 }
 
+# Parse database configuration from $DATABASE_URL
+try:
+    import dj_database_url
+except NameError:
+    pass
+DATABASES['default'] =  dj_database_url.config()
