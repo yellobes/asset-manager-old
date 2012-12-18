@@ -98,5 +98,8 @@ LOGGING = {
 }
 
 # Parse database configuration from $DATABASE_URL
-import dj_database_url
+try:
+    import dj_database_url
+except NameError:
+    pass
 DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
