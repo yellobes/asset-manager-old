@@ -18,5 +18,5 @@ python-dateutil==1.5
 wsgiref==0.1.2
 xattr==0.6.2
 zope.interface==3.5.1
-dj-database-url
-psycopg2
+psycopg2==2.4.5
+dj-database-url==0.2.0

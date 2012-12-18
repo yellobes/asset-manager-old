@@ -8,6 +8,10 @@ DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 
+DATABASES = {
+    'default': dj_database_url.config(default='sqlite:///db.sqlite')
+}
+
 ROOT_URLCONF = 'dj_t.urls'
 LOGIN_REDIRECT_URL = '/assets/'
 REGISTRATION_OPEN = False
