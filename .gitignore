@@ -1,4 +1,5 @@
 
+venv
 *.pyc
 *.DS_Store
 
@@ -14,4 +15,4 @@ media/**/*
 media/*
 dj_t/settings/*
 !dj_t/settings/base.py
-
+!dj_t/settings/__init__.py
