@@ -21,8 +21,6 @@
 				</tr>
 			</thead>
 			<tbody>
-		{% elif forloop.last %}
-			</tbody>
 		{% else %}
 				<tr>
 					{% for array in line %}
@@ -33,6 +31,9 @@
 						{% endfor %}
 					{% endfor %}
 				</tr>
+		{% endif %}
+		{% if forloop.last %}
+			</tbody>
 		{% endif %}
 	{% endfor %}
 	</table>

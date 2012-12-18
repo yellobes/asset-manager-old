@@ -26,9 +26,17 @@ import logging
 logger = logging.getLogger('django.request')
 
 
+try:
+    SEARCH_RESULTS_PER_PAGE
+except NameError:
+    SEARCH_RESULTS_PER_PAGE = 30
+
+
 def search(request):
-    if ( request.method == 'GET' ) | ( request.method == 'POST' ):
+    if (request.method == 'GET') | (request.method == 'POST'):
         sqs = SearchQuerySet().models(Asset)
+        page = request.GET.get('page')
+        query = request.GET.get('q')
 
         for x in request.GET.getlist('|'):
             sqs = sqs.filter(content=x)
@@ -36,8 +44,7 @@ def search(request):
         for x in request.GET.getlist('!'):
             sqs = sqs.exclude(content=x)
 
-        if request.GET.get('q'):
-            suggestion = None
+        if query:
             form = ModelSearchForm(
                     request.GET,
                     searchqueryset=sqs,
@@ -47,61 +54,80 @@ def search(request):
                 query = form.cleaned_data['q']
                 results = form.search()
 
-        else: results = sqs
+        else:
+            results = sqs
 
         for result in results:
             result.checkout_info = checkout_info(result)
 
+        paginator = Paginator(results, SEARCH_RESULTS_PER_PAGE)
 
-        return render_to_response('Assets/search/results.html', {'page':results},
-                context_instance = RequestContext(request))
-    else :
+        try:
+            page = paginator.page(page)
+        except PageNotAnInteger:
+            page = paginator.page(1)
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)
+
+        x = (SEARCH_RESULTS_PER_PAGE * page.number)
+        page.first = (SEARCH_RESULTS_PER_PAGE * (page.number - 1)) + 1
+        page.last = x
+        page.total = SEARCH_RESULTS_PER_PAGE * paginator.num_pages
+
+        return render_to_response('Assets/search/results.html', {'page': page},
+                context_instance=RequestContext(request))
+    else:
         return render_to_response('Assets/search/index.html',
-                context_instance = RequestContext(request))
+                context_instance=RequestContext(request))
 
 
 def collection(request, type):
     if request.method == 'GET':
         return render_type(request, type)
-    elif  request.method == 'POST'  :
+    elif request.method == 'POST':
         if 'PUT' in request.POST:
             return HttpResponseForbidden()
-        elif 'DELETE' in request.POST :
+        elif 'DELETE' in request.POST:
             return HttpResponseForbidden()
-        else :
+        else:
             return create_object(request, type, 0)
+
 
 def view(request, type, id):
     if request.method == 'GET':
-        view_object(request, type, id)
+        return view_object(request, type, id)
     else:
         return Http404
 
-def edit(request, type, id) :
+
+def edit(request, type, id):
     if request.method == 'GET':
         return edit_object(request, type, id)
-    elif request.method == 'POST' :
+    elif request.method == 'POST':
         if 'PUT' in request.POST:
             return create_object(request, type, id)
         elif 'delete' in request.POST:
             return kill_object(request, type, id)
 
 
-
 # ================== FUNCTIONS ======================
 class extra_datas:
     pass
 
+
 def view_object(request, type, id):
+    print 'view object'
     if type == 'asset':
+        print 'view asset id'
         Type = Asset
         template = 'asset.html'
         return render_to_response(
             'Assets/render/' + template,
-            {'object':Type}
+            {'object': Type}
         )
     else:
-        return HttpResponse
+        return Http404
+
 
 def edit_object(request, type, id):
     extra_data = extra_datas()
@@ -144,7 +170,20 @@ def edit_object(request, type, id):
         try:
             asset_id = int(asset_id)
             asset = Asset.objects.get(pk=asset_id)
-            asset_name = ' "%s"  ' % ( asset.asset_code, ) # asset.make, asset.model, )
+            asset_name = ' "%s"  ' % (asset.id,)  # asset.make, asset.model, )
+        except ValueError:
+            asset_name = ''
+        extra_data.asset_id = asset_id
+        extra_data.asset_name = asset_name
+    elif type == 'checkout':
+        Type = AssetCheckout
+        TypeForm = AssetCheckoutFancyForm
+        template = 'checkout.html'
+        asset_id = request.GET.get('asset_id', '')
+        try:
+            asset_id = int(asset_id)
+            asset = Asset.objects.get(pk=asset_id)
+            asset_name = ' "%s"  ' % (asset.id,)  # asset.make, asset.model, )
         except ValueError:
             asset_name = ''
         extra_data.asset_id = asset_id
@@ -164,7 +203,6 @@ def edit_object(request, type, id):
         template = 'type.html'
         extra_data.types = Type.objects.all()[:10]
     else:
-        print 'type not found :: ', type
         raise Http404
 
 
@@ -207,7 +245,7 @@ def create_object(request, type, id):
         try:
             asset_id = int(asset_id)
             asset = Asset.objects.get(pk=asset_id)
-            asset_name = ' "%s"  ' % ( asset.asset_code, ) #( %s %s )asset.make, asset.model, )
+            asset_name = ' "%s"  ' % ( asset.id, ) #( %s %s )asset.make, asset.model, )
         except ValueError:
             asset_name = ''
         extra_data.asset_name = asset_name
@@ -245,7 +283,10 @@ def create_object(request, type, id):
 
     object_form = TypeForm( request.POST, request.FILES, instance=Type)
 
-    extra_data.type = type.split('asset')[1]
+    try:
+        extra_data.type = type.split('asset')[1]
+    except IndexError:
+        extra_data.type = type
 
     if object_form.is_valid():
         object_form.save()
@@ -294,7 +335,6 @@ def render_type(request, type):
         return edit_object(request, type, 0)
     elif type == 'people':
         type_object = User
-
     else :
         logger.critical(' Nasty request :: ' + str(request) )
         return HttpResponseForbidden()

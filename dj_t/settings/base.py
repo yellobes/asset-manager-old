@@ -59,10 +59,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-
     'registration',
-
     'haystack',
+    'django_extensions',
 
     'Assets',
 )
@@ -98,3 +97,7 @@ LOGGING = {
         },
     }
 }
+
+# Parse database configuration from $DATABASE_URL
+import dj_database_url
+DATABASES['default'] =  dj_database_url.config()

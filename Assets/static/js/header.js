@@ -16,8 +16,7 @@ jQuery.fn.keyupQueue = function(callback, delay) {
 
 
 /* Search
- * ///////////////////////////
- ///////////////////////////////////////////////////////////////////
+ * //////////////////////////////////////////////////////////////////////////////////////////////
  * //////////////////////////////////////////////////////////////////////////////////////////////
  * //////////////////////////////////////////////////////////////////////////////////////////////
  * //////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,7 +25,7 @@ jQuery.fn.keyupQueue = function(callback, delay) {
  * //////////////////////////////////////////////////////////////////////////////////////////////
  */
 
-var filter_element = '<li><input class="search-filter" type="text" placeholder="&nbsp;filter" style="width:95%;"><a href="#" class="remove-filter">-</a></li>'
+var filter_element = '<li><input class="search-filter" type="text" placeholder="&nbsp;filter" style="width:95%;"><a href="#" class="remove-filter">-</a></li>';
 
 $(document).ready(function() {
   $('#search-wrapper').css({'width': $('#search-wrapper').width()});
@@ -42,13 +41,13 @@ $(document).ready(function() {
     if ( $search_filters.children('li').length > 0 ) {
       y = $('.search-filter');
       y.each(function() {
-        if( $(this).val() == '' ) {
+        if( $(this).val() === '' ) {
           $(this).parent('li').remove();
         }
       });
     }
 
-    if ( $('.search-filter').length == 0 ) {
+    if ( $('.search-filter').length === 0 ) {
       $search_filters.append(filter_element);
       $search_filters.toggle(300);
       $('#add-search-filter').toggle(400);
@@ -83,9 +82,11 @@ $(document).ready(function() {
   });
 
   function search(type){
-    filters = ''
-    exclude = ''
-    $('.search-filter').each(function(){ filters += ( $(this).val() + ',' ) });
+    filters = '';
+    exclude = '';
+    $('.search-filter').each(function(){
+      filters += ( $(this).val() + ',' );
+      });
     exclude = $('#exclude').val();
     $.get('/assets/'+type,
       { 'q': $('#search').val(),
@@ -100,7 +101,7 @@ $(document).ready(function() {
 });
 
 
-/* Header links 
+/* Header links
  * //////////////////////////////////////////////////////////////////////////////////////////////
  * //////////////////////////////////////////////////////////////////////////////////////////////
  * //////////////////////////////////////////////////////////////////////////////////////////////
@@ -118,7 +119,7 @@ $(document).ready(function() {
 
 
   $('.menu-header').mouseenter(function() {
-    $(this).children('ul').show(100)
+    $(this).children('ul').show(100);
   }).mouseleave(function() {
     $(this).children('ul').hide(100);
   });
@@ -131,7 +132,7 @@ $(document).ready(function() {
   var height = '';
 
   $('.menu-header').each(function(){
-    $(this).height($(this).height())
+    $(this).height($(this).height());
     if( height < $(this).height() ){
       height = $(this).height();
     }
@@ -147,7 +148,7 @@ $(window).resize(function(){
   var $search_wrapper = $('#search-wrapper');
   var menu_margin = $page_header.width() - $menu.width() - $search_wrapper.width() - 50;
 
-  console.log($page_header.width() + ' - ' + $menu.width() + ' - ' + $search_wrapper.width())
+  console.log($page_header.width() + ' - ' + $menu.width() + ' - ' + $search_wrapper.width());
   console.log(menu_margin);
   if( 1 < menu_margin ){
     $menu.css({'margin-left' :  menu_margin + 'px' });

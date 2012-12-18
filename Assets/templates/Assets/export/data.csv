@@ -1,0 +1,6 @@
+{% for row in data %}
+
+{% for cell in row %}
+{{ cell }},
+{% endfor %}
+{% endfor %}

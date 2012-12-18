@@ -3,9 +3,10 @@ from django import forms
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 
+
 # The main class that the application is built around.
 # A more or less generic model to define an asset
-class Asset(models.Model) :
+class Asset(models.Model):
     STATUS_CHOICES = (
             ('active',   'active'),
             ('inactive', 'inactive'),
@@ -25,27 +26,26 @@ class Asset(models.Model) :
 
     external_id = models.CharField(max_length=200, blank=True, )
     asset_status = models.CharField(choices=STATUS_CHOICES, max_length=100, blank=True, )
-    asset_type = models.ForeignKey("AssetType", )
-    #asset_code = models.CharField(max_length=100, unique=True, blank=True, )
     charge_type = models.CharField(choices=CHARGE_TYPE_CHOICES, default='expense', max_length=100, blank=True, )
 
     make = models.ForeignKey('AssetMake')
     model = models.ForeignKey('AssetModel')
 
     invoices = models.FileField(upload_to='invoices/', blank=True, )
-    invoices.help_text="Upload an archive of invoices or other paperwork"
+    invoices.help_text = "Upload an archive of invoices or other paperwork"
 
     @models.permalink
     def get_absolute_url(self):
         print "trying to get the absolute url of asset.:" + self.asset_code
         return ('asset_detail', (), {
-            'asset_code' : self.asset_code })
+            'asset_code': self.asset_code})
 
     def checkout(self):
-        return AssetCheckout(asset=this.id)
+        return AssetCheckout(asset=this.pk)
 
     def __unicode__(self):
         return unicode(self.id)
+
 
 class AssetMake(models.Model):
     make = models.CharField(max_length=100, blank=True, unique=True)
@@ -53,20 +53,22 @@ class AssetMake(models.Model):
     def __unicode__(self):
         return unicode(self.make)
 
+
 class AssetModel(models.Model):
     make = models.ForeignKey("AssetMake")
-
     title = models.CharField(max_length=200, unique=True)
 
-    sku = models.CharField(max_length=200,)
-    photo = models.ImageField(upload_to='img/',)
-    manual = models.FileField(upload_to='manual/',)
-    manual.help_text="Please upload an archive with ALL manual documents"
-    drivers = models.FileField(upload_to='drivers/',)
-    drivers.help_text="Upload an archive with associated drivers"
+    model_type =  models.ForeignKey("AssetType", blank=True, null=True, )
+    sku = models.CharField(max_length=200, blank=True, null=True, )
+    photo = models.ImageField(upload_to='img/', blank=True, null=True, )
+    manual = models.FileField(upload_to='manual/', blank=True, null=True, )
+    manual.help_text = "Please upload an archive with ALL manual documents"
+    drivers = models.FileField(upload_to='drivers/', blank=True,  null=True, )
+    drivers.help_text = "Upload an archive with associated drivers"
 
     def __unicode__(self):
         return unicode(self.title)
+
 
 # Checkout object. Enables checkouts and logging
 class AssetCheckout(models.Model):
@@ -79,17 +81,21 @@ class AssetCheckout(models.Model):
     def __unicode__(self):
         return unicode(self.pk)
 
+
 class AssetImport(models.Model):
     csv = models.FileField(upload_to='tmp/',)
     csv.help_text = 'Select a CSV file to import'
+
     def __unicode__(self):
         return unicode(self.csv)
 
+
 # A simple model that produces a form for search pages
-class SearchForm(forms.Form) :
+class SearchForm(forms.Form):
     search = forms.CharField(max_length=100)
 
-# Asset notes, could easily be exteded 
+
+# Asset notes, could easily be exteded
 #to other objects with a bit of tweaking
 class Note(models.Model):
     user = models.ManyToManyField(User, blank=True, default="")
@@ -98,11 +104,12 @@ class Note(models.Model):
     title = models.CharField(max_length=200)
     asset = models.ForeignKey("Asset", related_name="notes")
     body = models.TextField()
+
     @models.permalink
     def get_absolute_url(self):
         print "trying to get the absolute url of note.:" + self.id
         return ('note_detail', (), {
-            'note_id' : self.id })
+            'note_id': self.id, })
 
     def __unicode__(self):
         return self.title
@@ -137,9 +144,8 @@ class AssetType(models.Model):
         return unicode(self.type_name)
 
 
-
 # No fking idea what this does...
-class Types(models.Model) :
+class Types(models.Model):
     object_type = models.CharField(max_length=200)
 
     def __unicode__(self):
