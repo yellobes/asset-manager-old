@@ -1,0 +1,136 @@
+<!-- 1GTI -->
+{% if page %}
+<div class="pagination">
+  {% include "Assets/paginate.html" %}
+  <div class="loading-overlay">
+    <img src="{{ STATIC_URL }}img/loading.gif" style="height: 20px;">
+  </div>
+</div>
+<table class="table-border">
+  <thead>
+    <tr>
+      <td>Photo</td>
+      <td>Asset Code</td>
+      <td>Make</td>
+      <td>Model</td>
+      <td>Description</td>
+      <td>Checked Out To</td>
+      <td>Modify</td>
+      <td>History</td>
+    </tr>
+  </thead>
+  <tbody>
+{% endif %}
+{% for result in page %}
+  {% if not result.object.title %}
+    <tr class="fade">
+      <td>
+        {% if result.object.photo %}
+          <img class="asset-icon" src="/m/{{ result.object.photo }}" />
+        {% endif %}
+      </td>
+      <td>{{ result.object.asset_code }}</td>
+      <td>{{ result.object.make }}</td>
+      <td>{{ result.object.model }}</td>
+      <td>{{ result.object.description|truncatewords:25 }}</td>
+      <td>
+        {% if result.checkout_info %}
+        <form action='{% url killObject 'checkout' result.checkout_info.id %}'
+          method="post">
+          {% csrf_token %}
+          <input type='hidden' name='delete' value='delete' />
+          <input type="submit" value="Check In"></input>
+        </form>
+        {% else %}
+        <form action="{% url newObject 'checkout' %}" method="get">
+          <input type="hidden" name="asset_id" value="{{ result.object.id }}">
+          <input type="submit" value="Check Out">
+        </form>
+        {% endif %}
+      </td>
+      <td>
+        <input type="button" onclick="location.href='{% url editObject 'asset' result.object.id %}';"value="modify"></input>
+      </td>
+      <td>
+        <a href="{% url assetElement 'asset' result.object.id %}">History</a>
+      </td>
+    </tr>
+
+  {% endif %}
+
+  {% if forloop.last %}
+  </tbody>
+  {% endif %}
+
+{% empty %}
+  <p>No results found. <br />&nbsp;<b><em><a href="/help/searching">need help?</a></em></b></p>
+  
+  {% endfor %}
+</table>
+<div class="pagination">
+  {% include "Assets/paginate.html" %}
+  <div class="loading-overlay">
+    <img src="{{ STATIC_URL }}img/loading.gif" style="height: 20px;">
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  // Set everything up
+  $(document).ready(function(){
+    $('.loading-overlay').hide(200)
+    $('.asset-icon').width('50px');
+    window.icon = [];
+    $('.asset-icon').last().each(function(){
+    window.icon.margintop = $(this).css('margin-top');
+    window.icon.width = $(this).width();
+    window.icon.height = $(this).width();
+    });
+  });
+
+  // Animate the tables icons
+  $('.asset-icon').mouseenter(function(){
+  $(this).animate({
+    'margin-top': '-'+window.icon.margintop,
+    width: (window.icon.width * 1.5),
+    height: (window.icon.height * 1.5),
+    }, 50
+  );
+  });
+
+  // Animate the tables icons
+  $('.asset-icon').mouseleave(function(){
+    $(this).animate({
+    'margin-top': window.icon.margintop,
+    width: window.icon.width,
+    height: window.icon.height,
+  }, 50);
+  });
+
+  // Hook up the 'next' pagination links
+  $('.page-next').click(function(){
+    $('.loading-overlay').show(200)
+    $.get('/assets/search', 
+      { 
+        'q': $('#search').val(), 
+        'page' : {{ page.next_page_number }},
+      }, function(data){
+        $('.loading-overlay').hide(200)
+        $("#content").html(data);
+    });
+  });
+  
+  // Hook up the 'previous' pagination links
+  $('.page-previous').click(function(){
+    $('.loading-overlay').show(200)
+    $.get('/assets/search', 
+      { 
+        'q': $('#search').val(), 
+        'page' : {{ page.previous_page_number }},
+      }, function(data){
+        $('.loading-overlay').hide(200)
+        $("#content").html(data);
+    });
+  });
+
+</script>

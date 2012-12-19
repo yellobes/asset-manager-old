@@ -459,3 +459,29 @@ h1, h2, h3, h4 {
     margin-right: -15px;
     float: right;
 }
+
+.checkout-history {}
+
+.hist-out {
+    padding-top: 10px;
+    color: #A00;
+}
+
+.hist-in {
+    color: #0A0;
+}
+
+.about-object {
+    background-color: rgba(240, 250, 240, .8);
+    box-shadow: 0 0 20px 5px rgba(200, 200, 200, .6);
+    display: inline-block;
+    margin: 10px;
+    max-width: 600px;
+    min-width: 280px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.checkout-history ul {
+    padding-top: 10px;
+}

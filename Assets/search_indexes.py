@@ -32,5 +32,4 @@ class UserIndex(SearchIndex):
         return User.objects.all()
 
 site.register(Asset, AssetIndex)
-
-
+site.register(User, UserIndex)

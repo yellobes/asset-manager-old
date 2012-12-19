@@ -1,6 +1,10 @@
 <div id="search-wrapper">
   <input id="search" placeholder="&nbsp;search" class="search-input" type="text" autofocus="on">
-
+  <select id="type-filter">
+    <option value="assets">Assets</option>
+    <option value="people">People</option>
+    <option value=""></option>
+  </select>
   <!-- input id="exclude" placeholder="&nbsp;exclude" class="filter-input" type="text" -->
 
   <!-- img src="{{ STATIC_URL }}img/loading.gif" id="search-running" /-->
@@ -26,68 +30,29 @@
 var filter_element = '<li><input class="search-filter" type="text" placeholder="&nbsp;filter" style="width:95%;"><a href="#" class="remove-filter">-</a></li>'
 
 $(document).ready(function() {
+  window.type_filter = $('#type-filter').val();
   $('#search-wrapper').css({'width': $('#search-wrapper').width()});
-  var $search_filters = $('#search-filters');
-
-  if ( $search_filters.children('li').length < 1 ) {
-    $search_filters.hide();
-    $('#add-search-filter').hide();
-  }
-
-  $('.sticky-tab-header').click(function() {
-    if ( $search_filters.children('li').length > 0 ) {
-      y = $('.search-filter');
-      y.each(function() {
-        if( $(this).val() == '' ) {
-          $(this).parent('li').remove();
-        }
-      });
-    }
-
-    if ( $('.search-filter').length == 0 ) {
-      $search_filters.append(filter_element);
-      $search_filters.toggle(300);
-      $('#add-search-filter').toggle(400);
-    }
-  });
-
-  $('#add-search-filter').click(function(){
-    $search_filters.show(200, function() {
-      $search_filters.append(filter_element);
-      $search_filters.children('li').last().toggle();
-      $search_filters.children('li').last().toggle(400);
-      $search_filters.children('li').last().keyupQueue(function(){
-        search();
-      });
-    });
-  });
-
-  $('.remove-filter').live('click', function(){
-    x = $(this).parent();
-    x.toggle(200, function(){
-      x.remove();
-      if ( $search_filters.children('li').length < 1 ) {
-        $search_filters.hide(1000);
-        $('#add-search-filter').toggle(400);
-      }
-
-    });
-  });
 
   $('#search').keyupQueue(function(){
-    type = $('#exclude').val();
-    search(type);
+    search();
   });
+
+  $('#type-filter').change(function(){
+    window.type_filter = $(this).val();
+    search()
+  })
 
   function search(){
     filters = ''
     exclude = ''
     $('.search-filter').each(function(){ filters += ( $(this).val() + ',' ) });
+    $('.loading-overlay').show(200)
     $.get('/assets/search',
       { 'q': $('#search').val(),
-        '|': filters },
+        't': window.type_filter },
       function(responseText){
         $("#content").html(responseText);
+        $('.loading-overlay').hide(200)
       }
     );
   }

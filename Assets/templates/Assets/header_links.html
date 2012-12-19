@@ -3,9 +3,16 @@
   <div class="menu-header">
     <p><a href="#">Import / Export</a></p>
     <ul class="menu">
+      <p style="margin:0;padding:2px;background-color:rgba(200,100,100,.8); border-radius:0px;"> Import </p>
       <a href="{% url objectCollection 'assets' %}">
         <li class="menu-item">
-          <p>Import Assets</p>
+          <p>Assets</p>
+        </li>
+      </a>
+      <p style="margin:0;padding:2px;background-color:rgba(200,100,100,.8); border-radius:0px;"> Export </p>
+      <a href="{% url objectCollection 'assets' %}">
+        <li class="menu-item">
+          <p>Assets</p>
         </li>
       </a>
     </ul>

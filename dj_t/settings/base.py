@@ -7,14 +7,7 @@ import django
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'dj_t.db'
-    }
-}
-
-
+AUTH_PROFILE_MODULE = 'Assets.UserProfile'
 ROOT_URLCONF = 'dj_t.urls'
 LOGIN_REDIRECT_URL = '/assets/'
 REGISTRATION_OPEN = False
@@ -104,10 +97,3 @@ LOGGING = {
         },
     }
 }
-
-# Parse database configuration from $DATABASE_URL
-try:
-    import dj_database_url
-except NameError:
-    pass
-DATABASES['default'] =  dj_database_url.config()

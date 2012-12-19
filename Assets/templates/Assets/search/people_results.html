@@ -1,19 +1,7 @@
 <!-- 1GTI -->
 {% if page %}
 <div class="pagination">
-  <span class="step-links">
-      {% if page.has_previous %}
-          <a href="#?page={{ page.previous_page_number }}" class="page-previous">&lArr;</a>
-      {% endif %}
-
-      <span class="current">
-          {{ page.first }} - {{ page.last}} of {{ page.total }} results.
-      </span>
-
-      {% if page.has_next %}
-          <a href="#?page={{ page.next_page_number }}" class="page-next">&rArr;</a>
-      {% endif %}
-  </span>
+  {% include "Assets/paginate.html" %}
   <div class="loading-overlay">
     <img src="{{ STATIC_URL }}img/loading.gif" style="height: 20px;">
   </div>
@@ -21,13 +9,12 @@
 <table class="table-border">
   <thead>
     <tr>
-      <td>Photo</td>
-      <td>Asset Code</td>
-      <td>Make</td>
-      <td>Model</td>
-      <td>Description</td>
-      <td>Checked Out To</td>
-      <td>Modify</td>
+      <td>Picture</td>
+      <td>Username</td>
+      <td>Name</td>
+      <td>E-Mail</td>
+      <td>Last Login</td>
+      <td>Assets</td>
     </tr>
   </thead>
   <tbody>
@@ -36,36 +23,21 @@
   {% if not result.object.title %}
     <tr class="fade">
       <td>
-      {% if result.object.photo %}
+      {% if result.object.picture %}
         <img class="asset-icon" src="/m/{{ result.object.photo }}" />
       {% endif %}
       </td>
-      <td>{{ result.object.asset_code }}</td>
-      <td>{{ result.object.make }}</td>
-      <td>{{ result.object.model }}</td>
-      <td>{{ result.object.description|truncatewords:25 }}</td>
+      <td>{{ result.object.username }}</td>
+      <td>{{ result.object.last_name }}{% if result.object.first_name and result.object.last_name %},{% endif %} {{ result.object.first_name }}</td>
+      <td>{{ result.object.email }}</td>
       <td>
-      {% if result.checkout_info %}
-      <form action='{% url killObject 'checkout' result.checkout_info.id %}'
-        method="post">
-        {% csrf_token %}
-        <input type='hidden' name='delete' value='delete' />
-        <input type="submit" value="Check In"></input>
-      </form>
-      </td>
-      {% else %}
-      <form action="{% url newObject 'checkout' %}" method="get">
-        <input type="hidden" name="asset_id" value="{{ result.object.id }}">
-        <input type="submit" value="Check Out">
-      </form>
-      </td>
-      
+      {% if result.object.last_login %}
+        {{ result.object.last_login }}
       {% endif %}
-      <td>
-      <input type="button"
-      onclick="location.href='{% url editObject 'asset' result.object.id %}';"value="modify"></input>
       </td>
-    </td>
+      <td>
+        <a href="{% url objectConnectedObjects 'people' result.object.id 'assets' %}">-{{ result.num_out }}-</a>
+      </td>
     </tr>
 
   {% endif %}
@@ -80,19 +52,7 @@
   {% endfor %}
 </table>
 <div class="pagination">
-  <span class="step-links">
-      {% if page.has_previous %}
-          <a href="#?page={{ page.previous_page_number }}" class="page-previous">&lArr;</a>
-      {% endif %}
-
-      <span class="current">
-          {{ page.first }} - {{ page.last}} of {{ page.total }} results.
-      </span>
-
-      {% if page.has_next %}
-          <a href="#?page={{ page.next_page_number }}" class="page-next">&rArr;</a>
-      {% endif %}
-  </span>
+  {% include "Assets/paginate.html" %}
   <div class="loading-overlay">
     <img src="{{ STATIC_URL }}img/loading.gif" style="height: 20px;">
   </div>

@@ -15,7 +15,7 @@ urlpatterns = patterns('',
 
     url(r'^accounts/', include('registration.urls')),
 
-    url(r'^$', login_required( TemplateView.as_view(template_name='Assets/index.html',)), name='index'),
+    url(r'^$', login_required(TemplateView.as_view(template_name='Assets/index.html',)), name='index'),
 
 )
 
@@ -23,4 +23,3 @@ if settings.DEBUG:
     urlpatterns += patterns('',
         (r'^m/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     )
-

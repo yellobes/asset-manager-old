@@ -1,0 +1,13 @@
+  <span class="step-links">
+      {% if page.has_previous %}
+          <a href="#?page={{ page.previous_page_number }}" class="page-previous">&lArr;</a>
+      {% endif %}
+
+      <span class="current">
+          {% if page.has_previous %} {{ page.first }} - {% endif %} {% if page.has_next %} {{ page.last}} of {% endif %} {{ page.total }} results.
+      </span>
+
+      {% if page.has_next %}
+          <a href="#?page={{ page.next_page_number }}" class="page-next">&rArr;</a>
+      {% endif %}
+  </span>

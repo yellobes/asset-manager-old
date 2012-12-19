@@ -1,0 +1,11 @@
+{% for cell in object_fields %}
+{{cell}},
+{% endfor %}
+
+{% for object in objects %}
+{% for name, value in object.get_fields %}
+{% if value %}
+{{value}},
+{% endif %}
+{% endfor %}
+{% endfor %}

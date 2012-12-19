@@ -2,6 +2,16 @@ from django.db import models
 from django import forms
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+import django
+
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    picture = models.ImageField(upload_to='img/users', blank=True, null=True, )
+
+    def __str__(self):
+        return "%s's profile" % self.user
 
 
 # The main class that the application is built around.
@@ -41,10 +51,13 @@ class Asset(models.Model):
             'asset_code': self.asset_code})
 
     def checkout(self):
-        return AssetCheckout(asset=this.pk)
+        return AssetCheckout(asset=self.pk)
 
     def __unicode__(self):
         return unicode(self.id)
+
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in Asset._meta.fields]
 
 
 class AssetMake(models.Model):
@@ -58,10 +71,10 @@ class AssetModel(models.Model):
     make = models.ForeignKey("AssetMake")
     title = models.CharField(max_length=200, unique=True)
 
-    model_type =  models.ForeignKey("AssetType", blank=True, null=True, )
+    model_type = models.ForeignKey("AssetType", blank=True, null=True, )
     sku = models.CharField(max_length=200, blank=True, null=True, )
-    photo = models.ImageField(upload_to='img/', blank=True, null=True, )
-    manual = models.FileField(upload_to='manual/', blank=True, null=True, )
+    photo = models.ImageField(upload_to='img/assetmodels', blank=True, null=True, )
+    manual = models.FileField(upload_to='assets/manuals/', blank=True, null=True, )
     manual.help_text = "Please upload an archive with ALL manual documents"
     drivers = models.FileField(upload_to='drivers/', blank=True,  null=True, )
     drivers.help_text = "Upload an archive with associated drivers"
@@ -150,3 +163,18 @@ class Types(models.Model):
 
     def __unicode__(self):
         return self.object_type
+
+
+# Tie the user profile to the user.
+
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+
+
+def update_index(sender, instance, created, **kwargs):
+    django.core.management.call_command("update_index")
+
+
+post_save.connect(update_index, sender=User)
+post_save.connect(create_user_profile, sender=User)

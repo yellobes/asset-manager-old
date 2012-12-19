@@ -1,0 +1,67 @@
+<!-- 3W0NF -->
+{% extends 'Assets/element.html' %}
+
+{% block header %}
+  <br>
+  <a href="{% url assetIndex %}">&lsaquo; Asset index</a>
+  <br>
+  <span>
+    <h1>{{ user }}s Checkouts</h1>
+  </span>
+  <hr>
+  <script>
+  $(function(){
+    $('.biggerator').mouseenter(function(){
+      $(this).animate({
+          'max-width': 400,
+          'max-height': 400
+      })
+    });
+    $('.biggerator').mouseleave(function(){
+        $(this).animate({
+            'max-height': 100,
+            'max-width': 100
+        })
+    });
+  });
+  </script>
+{% endblock %}
+
+{% block body %}
+  <div id="asset-mod">
+    <div class="about-object">
+      <div style="border-bottom: 1px solid #BBB;">
+        {{ user.first_name }}
+        {{ user.last_name }} :: 
+        <a href="mailto://{{user.email}}">{{ user.email }}</a>
+      </div>
+      <div style="margin-top: 10px;">
+        <img class="biggerator" style="max-height: 100px; max-width: 100px; float: left; margin-right: 10px;" src="{{ user.profile.picture.url }}"></img>
+        <p> Date joined: {{ user.date_joined.date }} </p>
+        <p> Last login: {{ user.last_login.date }} </p>
+      </div>
+      <span style="margin-top: 20px;">
+        {% if checkouts %}
+          {{ checkouts|length }} Checked out assets:</span>
+        </div>
+        <div>
+          {% for checkout in checkouts %}
+          <li>{{ checkout.out_date }}
+            <ul>
+                <li>
+                  <a href="{% url assetElement 'asset' checkout.asset %}">
+                    Asset id; {{ checkout.asset }} &middot; {{checkout.description}}
+                  </a>
+              </li>
+            </ul>
+          </li>
+          {% endfor %}
+        {% else %}
+          No assets checked out. </span>
+        {% endif %}
+    </div>
+  </div>
+  {% block extension %}{% endblock %}
+{% endblock %}
+
+

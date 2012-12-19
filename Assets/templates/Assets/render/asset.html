@@ -5,17 +5,36 @@
   <a href="{% url assetIndex %}">&lsaquo; Asset index</a>
   <br>
   <span>
-    <h1>{{user}}'s Checked-out Assets</h1>
+    <h1>{{ object }}s History</h1>
   </span>
   <hr>
 {% endblock %}
 
 {% block body %}
-  {% for checkout in checkouts %}
-  <div>
-    <a href="/assets/asset/{{checkout}}">{{checkout.asset}} · {{checkout.out_date}} · {{checkout.description}}</a>
+  <div id="asset-mod">
+    <div class="about-object">
+      <div> &middot; Acquired: {{ object.acquisition_date }} </div>
+      <div> &middot; Description: {{ object.description }} </div>
+    </div>
+    <div class="checkout-history">
+      {% if history %}
+        <ul>
+        {% for checkout in history %}
+          <li><p class="hist-out">{{ checkout.out_date }}</p>
+            <ul>
+              <li>{{ checkout.user }}</li>
+              <li>{{ checkout.description }}</li>
+            </ul>
+          </li>
+          {% if checkout.in_date %}
+            <li><p class="hist-in">{{ checkout.in_date }}</p></li>
+          {% endif %}
+        {% endfor %}
+        </ul>
+      {% else %}
+        <p> This asset has never been checked out before. </p>
+      {% endif %}
+    </div>
   </div>
-  {% endfor %}
-
   {% block extension %}{% endblock %}
 {% endblock %}

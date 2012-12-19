@@ -1,10 +1,10 @@
 # // Peter Novotnak :: Flexion :: 2012
 
 import django
-
+import csv
 
 from django.shortcuts      import get_object_or_404, render_to_response, redirect
-from django.http           import HttpRequest, HttpResponse, HttpResponseForbidden
+from django.http           import HttpResponse, HttpResponseForbidden
 from django.template       import RequestContext
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from Assets.models         import *
@@ -15,14 +15,13 @@ from haystack.forms        import ModelSearchForm
 from django.core           import serializers
 
 from django.core.exceptions import *
-
 from Assets.functions import *
 from Assets.csv_import import import_csv
-
 from datetime import datetime
 from django.utils.timezone import utc
-
 import logging
+
+
 logger = logging.getLogger('django.request')
 
 
@@ -34,31 +33,36 @@ except NameError:
 
 def search(request):
     if (request.method == 'GET') | (request.method == 'POST'):
-        sqs = SearchQuerySet().models(Asset)
         page = request.GET.get('page')
         query = request.GET.get('q')
+        _type = request.GET.get('t')
+
+        results = SearchQuerySet().models(Asset)
+        if _type == 'people':
+            results = SearchQuerySet().models(User)
+            for i in results:
+                i.num_out = len(AssetCheckout.objects.filter(user=i.object.id).filter(in_date=None))
+        else:
+            _type = 'asset'
+            for result in results:
+                result.checkout_info = checkout_info(result)
 
         for x in request.GET.getlist('|'):
-            sqs = sqs.filter(content=x)
+            results = results.filter(content=x)
 
         for x in request.GET.getlist('!'):
-            sqs = sqs.exclude(content=x)
+            results = results.exclude(content=x)
 
         if query:
             form = ModelSearchForm(
                     request.GET,
-                    searchqueryset=sqs,
+                    searchqueryset=results,
                     load_all=True
                     )
             if form.is_valid():
                 query = form.cleaned_data['q']
                 results = form.search()
 
-        else:
-            results = sqs
-
-        for result in results:
-            result.checkout_info = checkout_info(result)
 
         paginator = Paginator(results, SEARCH_RESULTS_PER_PAGE)
 
@@ -72,9 +76,9 @@ def search(request):
         x = (SEARCH_RESULTS_PER_PAGE * page.number)
         page.first = (SEARCH_RESULTS_PER_PAGE * (page.number - 1)) + 1
         page.last = x
-        page.total = SEARCH_RESULTS_PER_PAGE * paginator.num_pages
+        page.total = len(results)
 
-        return render_to_response('Assets/search/results.html', {'page': page},
+        return render_to_response('Assets/search/%s_results.html' % _type, {'page': page},
                 context_instance=RequestContext(request))
     else:
         return render_to_response('Assets/search/index.html',
@@ -119,11 +123,16 @@ def view_object(request, type, id):
     print 'view object'
     if type == 'asset':
         print 'view asset id'
-        Type = Asset
+        _obj = Asset.objects.get(id=id)
+        History = AssetCheckout.objects.filter(asset=_obj.pk)
         template = 'asset.html'
         return render_to_response(
             'Assets/render/' + template,
-            {'object': Type}
+            {
+                'object': _obj,
+                'history': History
+            },
+            context_instance=RequestContext(request)
         )
     else:
         return Http404
@@ -335,44 +344,72 @@ def render_type(request, type):
         return edit_object(request, type, 0)
     elif type == 'people':
         type_object = User
-    else :
-        logger.critical(' Nasty request :: ' + str(request) )
+    else:
+        logger.critical(' Nasty request :: ' + str(request))
         return HttpResponseForbidden()
 
     collection = type_object.objects.all()
     collection = Paginator(collection, items_per_page)
 
-    try :
+    try:
         collection = collection.page(page)
-    except PageNotAnInteger :
+    except PageNotAnInteger:
         collection = collection.page(1)
-    except EmptyPage :
+    except EmptyPage:
         collection = collection.page(collection.pages)
 
     return render_to_response("Assets/%ss.html" % type,
-            { 'collection':collection },
-        context_instance = RequestContext(request))
+            {'collection': collection, },
+        context_instance=RequestContext(request))
 
 
 # TODO
 def relationships(request, type, id, rel_type):
     user = User.objects.get(pk=id)
-    checkouts = AssetCheckout.objects.filter(user=user) # Get by user
-    checkouts = checkouts.filter(in_date=None) # Get only the checkouts that are still active
+    user.profile = user.get_profile()
+    checkouts = AssetCheckout.objects.filter(user=user)  # Get by user
+    checkouts = checkouts.filter(in_date=None)  # Get only the checkouts that are still active
     for checkout in checkouts:
         print checkout
     return render_to_response(
-        'Assets/person.html',
+        'Assets/render/person.html',
         {
-            'checkouts':checkouts,
-            'user':user.username,
+            'checkouts': checkouts,
+            'user': user,
         },
+        context_instance=RequestContext(request)
     )
 
 
 # ================ GENERIC VIEWS ======================
 
 #from django.views.generic import TemplateView
+
+# ================ Export view ========================
+
+def export(request, type):
+    if type == 'assets':
+        _object = Asset
+    else:
+        raise Http404
+
+    objects = _object.objects.all()
+    object_fields = get_fields(_object)
+
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(mimetype='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="%s.csv"' % type
+
+    writer = csv.writer(response)
+    writer.writerow(object_fields)
+
+    for obj in objects:
+        obj.values = []
+        for i in obj.get_fields():
+            obj.values.append(i[1])
+        writer.writerow(obj.values)
+
+    return response
 
 # ================ Help Views =========================
 
@@ -382,7 +419,7 @@ def help(request, page):
             'import-assets',
             ]:
         return render_to_response("Assets/help/%s.html" % page,
-            context_instance = RequestContext(request))
+            context_instance=RequestContext(request))
     else:
         raise Http404
 
@@ -396,4 +433,3 @@ def get_models(request, id):
     except ObjectDoesNotExist:
         return HttpResponse('')
     return HttpResponse('')
-

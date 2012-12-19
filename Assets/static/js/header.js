@@ -88,11 +88,13 @@ $(document).ready(function() {
       filters += ( $(this).val() + ',' );
       });
     exclude = $('#exclude').val();
+    $('.loading-overlay').show(200)
     $.get('/assets/'+type,
       { 'q': $('#search').val(),
         '!': exclude,
         '|': filters },
       function(responseText){
+        $('.loading-overlay').hide(200)
         $("#content").html(responseText);
       }
     );
