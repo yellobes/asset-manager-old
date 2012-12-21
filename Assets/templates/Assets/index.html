@@ -2,9 +2,13 @@
 {% block title %}{{ section.title }}{% endblock %}
 </script>
 {% block content %}
+<img src="{{ STATIC_URL }}/img/loading.gif"></img>
 <script type="text/javascript">
     $(document).ready( function(){
-            $('#content').load('{% url assetSearch %}?');
+            $('#content').load('{% url assetSearch %}?',
+                function(){
+                    console.log('page loaded');
+                });
         }); 
 </script>
 <div id="content"></div>
