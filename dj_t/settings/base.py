@@ -65,15 +65,17 @@ INSTALLED_APPS = (
 
     'Assets',
 )
-HAYSTACK_WHOOSH_PATH = 'whoosh_index'
+
+HAYSTACK_WHOOSH_PATH = os.path.join(SITE_ROOT, 'whoosh_index')
 HAYSTACK_SITECONF = 'dj_t.search'
 HAYSTACK_SEARCH_ENGINE = 'whoosh'
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+        'PATH': HAYSTACK_WHOOSH_PATH,
     },
 }
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

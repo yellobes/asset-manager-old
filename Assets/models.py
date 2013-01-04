@@ -46,7 +46,6 @@ class Asset(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        print "trying to get the absolute url of asset.:" + self.asset_code
         return ('asset_detail', (), {
             'asset_code': self.asset_code})
 
@@ -120,7 +119,6 @@ class Note(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        print "trying to get the absolute url of note.:" + self.id
         return ('note_detail', (), {
             'note_id': self.id, })
 
